@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Markom2.Web.Pages
 {
@@ -19,7 +20,8 @@ namespace Markom2.Web.Pages
 
         public void OnGet()
         {
-
+            Log.Information("hello");
+            //_logger.LogInformation("hello world");
         }
     }
 }

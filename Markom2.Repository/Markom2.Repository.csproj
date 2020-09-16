@@ -5,7 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Business\" />
+    <Compile Remove="Migrations\20200914123840_InitialIdentitySchema.cs" />
+    <Compile Remove="Migrations\20200914123840_InitialIdentitySchema.Designer.cs" />
+    <Compile Remove="Migrations\20200916015702_PenambahanTabelMCompany.cs" />
+    <Compile Remove="Migrations\20200916015702_PenambahanTabelMCompany.Designer.cs" />
+    <Compile Remove="Migrations\20200916035359_PenambahanTabelMCompany.cs" />
+    <Compile Remove="Migrations\20200916035359_PenambahanTabelMCompany.Designer.cs" />
+    <Compile Remove="Migrations\20200916114647_InitialIdentityAndMCompanySchema.cs" />
+    <Compile Remove="Migrations\20200916114647_InitialIdentityAndMCompanySchema.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="IdentityFlow\" />
   </ItemGroup>
 

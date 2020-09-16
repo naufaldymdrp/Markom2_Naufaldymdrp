@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Markom2.Web", "Markom2.Web\Markom2.Web.csproj", "{E9D2D721-CC93-4943-992F-5D364ADB6CC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markom2.Repository", "Markom2.Repository\Markom2.Repository.csproj", "{8480F766-8828-4D6E-A585-670DBDAC376B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Markom2.Repository", "Markom2.Repository\Markom2.Repository.csproj", "{8480F766-8828-4D6E-A585-670DBDAC376B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Formatting.Json;
 
 namespace Markom2.Web
 {
@@ -19,8 +21,12 @@ namespace Markom2.Web
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(log =>
                 {
-                    log.ClearProviders();
-                    log.AddConsole();
+                    var loggerConfig = new LoggerConfiguration()
+                        .WriteTo.Console()
+                        .WriteTo.File(new JsonFormatter(), "log/log.json")
+                        .CreateLogger();
+
+                    log.AddSerilog(loggerConfig);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
