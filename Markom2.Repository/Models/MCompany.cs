@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Markom2.Repository.Models
 {
-    [Table("M_company")]
+    [Table("M_Company")]
     public class MCompany
     {
         [Key]
@@ -41,18 +41,22 @@ namespace Markom2.Repository.Models
 
         public bool IsDelete { get; set; }
                        
+        [Column("Created_By")]
         public string CreatedBy { get; set; }
 
         [ForeignKey("CreatedBy")]
         public IdentityUser CreatedBy_Navigation { get; set; }
               
+        [Column("Created_Date")]
         public DateTime CreatedDate { get; set; }
 
+        [Column("Updated_By")]
         public string UpdatedBy { get; set; }
 
         [ForeignKey("UpdatedBy")]
         public IdentityUser UpdatedBy_Navigation { get; set; }
 
+        [Column("Updated_Date")]
         public DateTime UpdatedDate { get; set; }
     }
 }

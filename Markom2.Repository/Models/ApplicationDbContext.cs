@@ -19,6 +19,6 @@ namespace Markom2.Repository.Models
             //builder.Entity()
         }
 
-        public DbSet<MCompany> M_company { get; set; }
+        public DbSet<MCompany> M_Company { get; set; }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Markom2.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200916122948_InitialIdentityAndMCompanySchema")]
-    partial class InitialIdentityAndMCompanySchema
+    [Migration("20200917084249_AddInitialIdentityAndMCompanySchema")]
+    partial class AddInitialIdentityAndMCompanySchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,9 +39,11 @@ namespace Markom2.Repository.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("CreatedBy")
+                        .HasColumnName("Created_By")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
+                        .HasColumnName("Created_Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -63,9 +65,11 @@ namespace Markom2.Repository.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("UpdatedBy")
+                        .HasColumnName("Updated_By")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("UpdatedDate")
+                        .HasColumnName("Updated_Date")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -74,7 +78,7 @@ namespace Markom2.Repository.Migrations
 
                     b.HasIndex("UpdatedBy");
 
-                    b.ToTable("M_company");
+                    b.ToTable("M_Company");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

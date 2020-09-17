@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Extensions.Logging;
 using Serilog.Formatting.Json;
 
 namespace Markom2.Web
@@ -21,11 +22,14 @@ namespace Markom2.Web
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(log =>
                 {
+                    var providers = new LoggerProviderCollection();
                     var loggerConfig = new LoggerConfiguration()
+                        .WriteTo.Providers(providers)
                         .WriteTo.Console()
                         .WriteTo.File(new JsonFormatter(), "log/log.json")
                         .CreateLogger();
 
+                    log.ClearProviders(); // agar provider default tidak di ikut sertakan
                     log.AddSerilog(loggerConfig);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

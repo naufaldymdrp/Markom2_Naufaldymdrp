@@ -13,6 +13,10 @@
     <Compile Remove="Migrations\20200916035359_PenambahanTabelMCompany.Designer.cs" />
     <Compile Remove="Migrations\20200916114647_InitialIdentityAndMCompanySchema.cs" />
     <Compile Remove="Migrations\20200916114647_InitialIdentityAndMCompanySchema.Designer.cs" />
+    <Compile Remove="Migrations\20200916122948_InitialIdentityAndMCompanySchema.cs" />
+    <Compile Remove="Migrations\20200916122948_InitialIdentityAndMCompanySchema.Designer.cs" />
+    <Compile Remove="Migrations\20200917063338_AddInitialIdentityAndMCompanySchema.cs" />
+    <Compile Remove="Migrations\20200917063338_AddInitialIdentityAndMCompanySchema.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Markom2.Repository.Business
 {
-    class MCompanyService
-        //: ITableService<MCompany>
+    public class MCompanyService
+        : ITableService<MCompany>
     {
         private readonly ApplicationDbContext _context;
 
@@ -30,17 +30,11 @@ namespace Markom2.Repository.Business
         {
             _logger.LogInformation("Pengambilan data MCompany dimulai");
 
-            try
-            {
-                var result = await _context.M_company.ToListAsync();
+            var result = await _context.M_Company
+                .Include(item => item.CreatedBy_Navigation)
+                .ToListAsync();
 
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Pengambilan data MCompany gagal, keterangan {0}", ex.Message);
-                throw new Exception("Pengambilan semua data MCompany gagal", ex);
-            }
+            return result;
         }
 
         /// <summary>
@@ -52,51 +46,42 @@ namespace Markom2.Repository.Business
         {
             _logger.LogInformation("Pengambilan data MCompany berdasarkan id dimulai");
 
-            try
-            {
-                var result = await _context.M_company
-                    .Where(item => item.Code.Contains(companyCode) || item.Code.Contains(companyName))
-                    .ToListAsync();
+            var result = await _context.M_Company
+                .Where(item => item.Code.Contains(companyCode) || item.Code.Contains(companyName))
+                .ToListAsync();
 
-                return result;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Pengambilan data MCompany berdasarkan id gagal, keterangan {0}", ex.Message);
-                throw new Exception("Pengambilan data MCompany berdasarkan id gagal", ex);
-            }
+            return result;
         }
 
         public async Task AddAsync(MCompany data)
         {
             _logger.LogInformation("Penambahan data MCompany dimulai");
-
-            try
-            {
-                await _context.AddAsync(data);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Telah terjadi error, karena {ex.Message}");
-                throw new Exception($"Telah terjadi error", ex);
-            }
+            
+            await _context.AddAsync(data);                        
         }
 
         public async Task EditAsync(MCompany data)
         {
             _logger.LogInformation("Perubahan data MCompany dimulai");
 
-            try
-            {
-                var result = _context.Attach(data).State = EntityState.Modified;
+            _context.Attach(data).State = EntityState.Modified;
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Terjadi error, keterangan : {0}", ex.Message);
-                throw new Exception("Perubahan data error", ex);
-            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int dataId)
+        {
+            _logger.LogInformation("Penghapusan data MCompany (ubah IsDelete) dimulai");
+
+            var entity = await _context.M_Company
+                .Where(item => item.Id == dataId)
+                .FirstOrDefaultAsync();
+
+            entity.IsDelete = false;
+
+            _context.Attach(entity).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
         }
     }
 }

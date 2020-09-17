@@ -8,9 +8,27 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th></th>
+                    <th>@Html.DisplayNameFor(item => item.Companies[0].Id)</th>
+                    <th>@Html.DisplayNameFor(item => item.Companies[0].Code)</th>
+                    <th>@Html.DisplayNameFor(item => item.Companies[0].Name)</th>
+                    <th>@Html.DisplayNameFor(item => item.Companies[0].Email)</th>
+                    <th>@Html.DisplayNameFor(item => item.Companies[0].Phone)</th>
+                    <th>@Html.DisplayNameFor(item => item.Companies[0].CreatedBy_Navigation.UserName)</th>
                 </tr>
             </thead>
+            <tbody>
+                @foreach (var modelItem in Model.Companies)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(_ => modelItem.Id)</td>
+                        <td>@Html.DisplayFor(_ => modelItem.Code)</td>
+                        <td>@Html.DisplayFor(_ => modelItem.Name)</td>
+                        <td>@Html.DisplayFor(_ => modelItem.Email)</td>
+                        <td>@Html.DisplayFor(_ => modelItem.Phone)</td>
+                        <td>@Html.DisplayFor(_ => modelItem.CreatedBy_Navigation.UserName)</td>
+                    </tr>
+                }
+            </tbody>
         </table>
     </div>
 </div>

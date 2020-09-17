@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Markom2.Repository.Migrations
 {
-    public partial class InitialIdentityAndMCompanySchema : Migration
+    public partial class AddInitialIdentityAndMCompanySchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -153,7 +153,7 @@ namespace Markom2.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "M_company",
+                name: "M_Company",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -164,23 +164,23 @@ namespace Markom2.Repository.Migrations
                     Phone = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     IsDelete = table.Column<bool>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    CreatedDate = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(nullable: true),
-                    UpdatedDate = table.Column<DateTime>(nullable: false)
+                    Created_By = table.Column<string>(nullable: true),
+                    Created_Date = table.Column<DateTime>(nullable: false),
+                    Updated_By = table.Column<string>(nullable: true),
+                    Updated_Date = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_M_company", x => x.Id);
+                    table.PrimaryKey("PK_M_Company", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_M_company_AspNetUsers_CreatedBy",
-                        column: x => x.CreatedBy,
+                        name: "FK_M_Company_AspNetUsers_Created_By",
+                        column: x => x.Created_By,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_M_company_AspNetUsers_UpdatedBy",
-                        column: x => x.UpdatedBy,
+                        name: "FK_M_Company_AspNetUsers_Updated_By",
+                        column: x => x.Updated_By,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -226,14 +226,14 @@ namespace Markom2.Repository.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_M_company_CreatedBy",
-                table: "M_company",
-                column: "CreatedBy");
+                name: "IX_M_Company_Created_By",
+                table: "M_Company",
+                column: "Created_By");
 
             migrationBuilder.CreateIndex(
-                name: "IX_M_company_UpdatedBy",
-                table: "M_company",
-                column: "UpdatedBy");
+                name: "IX_M_Company_Updated_By",
+                table: "M_Company",
+                column: "Updated_By");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -254,7 +254,7 @@ namespace Markom2.Repository.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "M_company");
+                name: "M_Company");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

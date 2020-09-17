@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Markom2.Repository.Models;
+using Markom2.Repository.Business;
 
 namespace Markom2.Web
 {
@@ -33,6 +34,7 @@ namespace Markom2.Web
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<MCompanyService>();
             services.AddRazorPages();
         }
 
