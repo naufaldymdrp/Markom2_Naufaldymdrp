@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
@@ -12,16 +13,19 @@ namespace Markom2.Repository.Models
     public class MCompany
     {
         [Key]
+        [DisplayName("No")]
         public int Id { get; set; }
 
         [Required]
         [MaxLength(50)]
         [Column(TypeName = "varchar(50)")]
+        [DisplayName("Company Code")]
         public string Code { get; set; }
 
         [Required]
         [MaxLength(50)]
         [Column(TypeName = "varchar(50)")]
+        [DisplayName("Company Name")]
         public string Name { get; set; }
 
         [Required]
@@ -48,6 +52,7 @@ namespace Markom2.Repository.Models
         public IdentityUser CreatedBy_Navigation { get; set; }
               
         [Column("Created_Date")]
+        [DisplayName("Created Date")]
         public DateTime CreatedDate { get; set; }
 
         [Column("Updated_By")]
