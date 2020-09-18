@@ -338,3 +338,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/Markom2.Web/Pages/Master/EditMCompany.cshtml.cs
+/Markom2.Web/Pages/Master/EditMCompany.cshtml
+/Markom2.Web/Pages/Master/AddMCompany.cshtml.cs
+/Markom2.Web/Pages/Master/AddMCompany.cshtml

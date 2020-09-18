@@ -1,9 +1,7 @@
-﻿@page
+﻿@page "{handler?}"
 @model Markom2.Web.Pages.Master.MCompanyModel
 @{
 }
-
-
 
 <div class="row">
     <div class="col-sm">
@@ -18,7 +16,7 @@
         <hr />
         <!-- /BreadCrumb Navigation -->
         <h4>Company Master Data</h4>
-        <h6><a href="#">Add Company</a></h6>        
+        <h6><a href="#" id="AddCompanyModalButton" class="btn-link">Add Company</a></h6>        
         <table class="table">
             <thead>
                 <tr>
@@ -46,3 +44,27 @@
         </table>
     </div>
 </div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        
+        $(document).ready(() => {
+            $("#AddCompanyModalButton").on("click", () => {                
+                $.ajax({
+                    url: "MCompany/AddMCompanyPartial",
+                    accepts: "text/html",
+                    success: e => {                        
+                        $("#ModalContent").append(e);
+                    }
+                })
+                showModal();
+            });
+
+            
+            $("")
+
+
+        });
+    </script>    
+}

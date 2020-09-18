@@ -41,5 +41,10 @@ namespace Markom2.Web.Pages.Master
                 Error = ex;
             }
         }
+
+        public  PartialViewResult OnGetAddMCompanyPartial()
+        {
+            return Partial("_MCompanyFormPartial");
+        }
     }
 }
