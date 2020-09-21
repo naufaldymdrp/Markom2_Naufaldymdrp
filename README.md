@@ -5,6 +5,7 @@ Pengerjaan proyek Markom 2 di Xsis
 Tidak perlu Visual Studio 2019 untuk menjalankan program ini.
 
 ### Syarat runtime
+> minimal .NET Core SDK 3.1.401
 
 ## Berikut adalah 2 cara restore packages
 ### Melalui .NET Core CLI
