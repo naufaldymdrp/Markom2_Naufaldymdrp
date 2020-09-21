@@ -16,7 +16,17 @@
         <hr />
         <!-- /BreadCrumb Navigation -->
         <h4>Company Master Data</h4>
-        <h6><a href="#" id="AddCompanyModalButton" class="btn-link">Add Company</a></h6>        
+        <div class="row">
+            <div class="col-sm d-flex flex-row-reverse">
+                <a href="#" id="AddCompanyModalButton" class="btn btn-primary">Add</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+
+            </div>
+        </div>
+        <br />
         <table class="table">
             <thead>
                 <tr>
@@ -29,16 +39,19 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var modelItem in Model.Companies)
+                @if (Model.Companies != null)
                 {
-                    <tr>
-                        <td>@Html.DisplayFor(_ => modelItem.Id)</td>
-                        <td>@Html.DisplayFor(_ => modelItem.Code)</td>
-                        <td>@Html.DisplayFor(_ => modelItem.Name)</td>                        
-                        <td>@Html.DisplayFor(_ => modelItem.CreatedDate)</td>
-                        <td>@Html.DisplayFor(_ => modelItem.CreatedBy_Navigation.UserName)</td>
-                        <td>Klik</td>
-                    </tr>
+                    @foreach (var modelItem in Model.Companies)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(_ => modelItem.Id)</td>
+                            <td>@Html.DisplayFor(_ => modelItem.Code)</td>
+                            <td>@Html.DisplayFor(_ => modelItem.Name)</td>
+                            <td>@Html.DisplayFor(_ => modelItem.CreatedDate)</td>
+                            <td>@Html.DisplayFor(_ => modelItem.CreatedBy_Navigation.UserName)</td>
+                            <td>Klik</td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
@@ -47,24 +60,60 @@
 
 @section Scripts
 {
+    <partial name="_ValidationScriptsPartial" />  
     <script type="text/javascript">
-        
+
         $(document).ready(() => {
-            $("#AddCompanyModalButton").on("click", () => {                
+            $("#AddCompanyModalButton").on("click", () => {
                 $.ajax({
                     url: "MCompany/AddMCompanyPartial",
                     accepts: "text/html",
-                    success: e => {                        
+                    success: e => {
                         $("#ModalContent").append(e);
+                        $("form#MCompanyFormPartial").removeData("validator");
+                        $("form#MCompanyFormPartial").removeData("unobtrusiveValidation");
+                        $.validator.unobtrusive.parse("form#MCompanyFormPartial");
+                    },
+                    error: err => {
+                        var errDetailJson = err.responseJson;
+                        $("#ModalContent").append(errDetailJson);
                     }
-                })
+                });
+                
                 showModal();
             });
 
-            
-            $("")
+            $(document).on("submit", "#MCompanyFormPartial", (ev) => {
+                ev.preventDefault();
+                //debugger;
+
+
+
+                //$.validator.unobtrusive.parse("form#MCompanyFormPartial");
+                let formValue = $("#MCompanyFormPartial").serialize();
+                //console.log(formValue);
+                if (formValue != undefined) {
+                    $.post("MCompany/AddMCompany", formValue, (resData) => {
+                        //debugger;
+                        console.log("sukses");
+                        console.log(resData);
+                        closeModal();
+                    }).fail(data => {
+                        //debugger;
+                        console.log("gagal");
+                        console.log(data.responseText);
+                    }).done(() => {
+                        $.get("MCompany");
+                    });
+                }
+            });
+
+            $(document).on("click", "#MCompanyModalCloser", () => {
+                closeModal();
+            });
 
 
         });
-    </script>    
+    </script>  
+
 }

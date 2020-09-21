@@ -17,6 +17,20 @@
     <Compile Remove="Migrations\20200916122948_InitialIdentityAndMCompanySchema.Designer.cs" />
     <Compile Remove="Migrations\20200917063338_AddInitialIdentityAndMCompanySchema.cs" />
     <Compile Remove="Migrations\20200917063338_AddInitialIdentityAndMCompanySchema.Designer.cs" />
+    <Compile Remove="Migrations\20200917084249_AddInitialIdentityAndMCompanySchema.cs" />
+    <Compile Remove="Migrations\20200917084249_AddInitialIdentityAndMCompanySchema.Designer.cs" />
+    <Compile Remove="Migrations\20200921013306_ChangeColumn_MCompany.cs" />
+    <Compile Remove="Migrations\20200921013306_ChangeColumn_MCompany.Designer.cs" />
+    <Compile Remove="Migrations\20200921014153_ChangeDefaultValue_MCompany.cs" />
+    <Compile Remove="Migrations\20200921014153_ChangeDefaultValue_MCompany.Designer.cs" />
+    <Compile Remove="Migrations\20200921024001_ChangeAndAddComputedColumnSql.cs" />
+    <Compile Remove="Migrations\20200921024001_ChangeAndAddComputedColumnSql.Designer.cs" />
+    <Compile Remove="Migrations\20200921051317_AddInitialIdentityAndSchema.cs" />
+    <Compile Remove="Migrations\20200921051317_AddInitialIdentityAndSchema.Designer.cs" />
+    <Compile Remove="Migrations\20200921054923_AddInitialIdentityAndSchema.cs" />
+    <Compile Remove="Migrations\20200921054923_AddInitialIdentityAndSchema.Designer.cs" />
+    <Compile Remove="Migrations\20200921062118_ChangeColumn_MCompany.cs" />
+    <Compile Remove="Migrations\20200921062118_ChangeColumn_MCompany.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Markom2.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200917084249_AddInitialIdentityAndMCompanySchema")]
-    partial class AddInitialIdentityAndMCompanySchema
+    [Migration("20200921063234_AddInitialIdentityAndSchema")]
+    partial class AddInitialIdentityAndSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.7")
+                .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -29,7 +29,6 @@ namespace Markom2.Repository.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("varchar(255)")
                         .HasMaxLength(255);
 
@@ -39,15 +38,17 @@ namespace Markom2.Repository.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnName("Created_By")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("Created_Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasMaxLength(50);
 
@@ -60,7 +61,6 @@ namespace Markom2.Repository.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasMaxLength(50);
 
@@ -68,9 +68,9 @@ namespace Markom2.Repository.Migrations
                         .HasColumnName("Updated_By")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnName("Updated_Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
@@ -285,7 +285,9 @@ namespace Markom2.Repository.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedBy_Navigation")
                         .WithMany()
-                        .HasForeignKey("CreatedBy");
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "UpdatedBy_Navigation")
                         .WithMany()

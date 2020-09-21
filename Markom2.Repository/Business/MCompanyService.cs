@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Markom2.Repository.Business
 {
@@ -44,7 +45,7 @@ namespace Markom2.Repository.Business
         /// <returns>data MCompany berdasarkan Id dalam bentuk IList task</returns>
         public async Task<IList<MCompany>> GetAsync(string companyCode, string companyName)
         {
-            _logger.LogInformation("Pengambilan data MCompany berdasarkan id dimulai");
+            _logger.LogInformation("Pengambilan data MCompany berdasarkan id dimulai");            
 
             var result = await _context.M_Company
                 .Where(item => item.Code.Contains(companyCode) || item.Code.Contains(companyName))
@@ -53,11 +54,50 @@ namespace Markom2.Repository.Business
             return result;
         }
 
+        public async Task<string> GetLastId()
+        {
+            var lastItem = await _context.Database
+                .ExecuteSqlRawAsync("SELECT IDENT_CURRENT('M_Company') AS LastId");
+
+            var lastId = lastItem + 1;
+
+            var stringId = lastId.ToString();
+            var leadingZeros = "0000";
+            var cutLeadingZeros = leadingZeros.AsMemory().Slice(stringId.Length);
+            var result = "CP" + cutLeadingZeros.ToString() + stringId;
+
+            return result;
+        }
+
         public async Task AddAsync(MCompany data)
         {
             _logger.LogInformation("Penambahan data MCompany dimulai");
-            
-            await _context.AddAsync(data);                        
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                data.Code = "xxxx"; // hanya sementara
+                _context.Add(data);
+                await _context.SaveChangesAsync();
+
+                var lastId = data.Id.ToString();
+                var leadingZeros = "0000";
+                var cutLeadingZeros = leadingZeros.AsMemory().Slice(lastId.Length);
+                data.Code = "CP" + cutLeadingZeros.ToString() + lastId;
+
+                _context.Attach(data).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+
+                _logger.LogError("MCompanyService error : {@ex}", ex);
+                throw new Exception("MCompanyService error", ex);
+            }
         }
 
         public async Task EditAsync(MCompany data)

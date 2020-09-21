@@ -16,7 +16,14 @@ namespace Markom2.Repository.Models
         {
             base.OnModelCreating(builder);
 
-            //builder.Entity()
+            builder.Entity<MCompany>(buildAction =>
+            {
+                buildAction.Property(item => item.Code)
+                    .IsRequired();                    
+
+                buildAction.Property(item => item.CreatedDate)
+                    .HasDefaultValueSql("GETDATE()");
+            });
         }
 
         public DbSet<MCompany> M_Company { get; set; }

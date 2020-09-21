@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Markom2.Repository.Migrations
 {
-    public partial class AddInitialIdentityAndMCompanySchema : Migration
+    public partial class AddInitialIdentityAndSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -160,14 +160,14 @@ namespace Markom2.Repository.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Address = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    Phone = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Address = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true),
+                    Phone = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    Email = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
                     IsDelete = table.Column<bool>(nullable: false),
-                    Created_By = table.Column<string>(nullable: true),
-                    Created_Date = table.Column<DateTime>(nullable: false),
+                    Created_By = table.Column<string>(nullable: false),
+                    Created_Date = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "GETDATE()"),
                     Updated_By = table.Column<string>(nullable: true),
-                    Updated_Date = table.Column<DateTime>(nullable: false)
+                    Updated_Date = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -177,7 +177,7 @@ namespace Markom2.Repository.Migrations
                         column: x => x.Created_By,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_M_Company_AspNetUsers_Updated_By",
                         column: x => x.Updated_By,
