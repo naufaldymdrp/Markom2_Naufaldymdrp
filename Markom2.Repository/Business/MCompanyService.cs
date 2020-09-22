@@ -100,6 +100,27 @@ namespace Markom2.Repository.Business
             }
         }
 
+        public async Task<IList<MCompany>> GetAsync(MCompany targetData)
+        {
+            _logger.LogInformation("Pencarian data MCompany dimulai");
+
+            var result = await _context.M_Company
+                            .Include(item => item.CreatedBy_Navigation)
+                            .Where(item => EF.Functions.Like(item.Code, $"%{targetData.Code}%") 
+                                && EF.Functions.Like(item.Name, $"%{targetData.Name}%"))                            
+                            .ToListAsync();
+
+            IList<MCompany> result2 = result;
+            if (targetData.CreatedBy != null)
+            {
+                result2 = result
+                .Where(item => item.CreatedBy_Navigation.UserName.Contains(targetData.CreatedBy))
+                .ToList();
+            }
+
+            return result2;
+        }
+
         public async Task EditAsync(MCompany data)
         {
             _logger.LogInformation("Perubahan data MCompany dimulai");

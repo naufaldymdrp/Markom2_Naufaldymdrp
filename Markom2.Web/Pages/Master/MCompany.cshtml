@@ -16,14 +16,36 @@
         <hr />
         <!-- /BreadCrumb Navigation -->
         <h4>Company Master Data</h4>
-        <div class="row">
-            <div class="col-sm d-flex flex-row-reverse">
-                <a href="#" id="AddCompanyModalButton" class="btn btn-primary">Add</a>
+        <div class="row d-flex justify-content-end">
+            <div class="col-md-2">
+                <button href="#" id="AddCompanyModalButton" class="btn btn-primary">
+                    <span class="fas fa-plus" aria-hidden="true"></span>
+                </button>
             </div>
         </div>
+        <br />
         <div class="row">
-            <div class="col-sm">
-
+            <div class="col-sm-12">
+                <form class="row d-flex justify-content-end" id="SearchCompanyForm">
+                    @*<div class="col-md"></div>*@
+                    <div class="col-md">
+                        <input asp-for="Company.Code" class="form-control" />
+                    </div>
+                    <div class="col-md">
+                        <input asp-for="Company.Name" class="form-control" />
+                    </div>
+                    <div class="col-md">
+                        <input asp-for="Company.CreatedDate" class="form-control" />
+                    </div>
+                    <div class="col-md">
+                        <input asp-for="Company.CreatedBy" class="form-control" />
+                    </div>
+                    <div class="col-md">
+                        <button type="submit" href="#" id="SearchCompanyButton" class="btn btn-warning">
+                            <span class="fas fa-search-plus" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
         <br />
@@ -38,21 +60,8 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-                @if (Model.Companies != null)
-                {
-                    @foreach (var modelItem in Model.Companies)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(_ => modelItem.Id)</td>
-                            <td>@Html.DisplayFor(_ => modelItem.Code)</td>
-                            <td>@Html.DisplayFor(_ => modelItem.Name)</td>
-                            <td>@Html.DisplayFor(_ => modelItem.CreatedDate)</td>
-                            <td>@Html.DisplayFor(_ => modelItem.CreatedBy_Navigation.UserName)</td>
-                            <td>Klik</td>
-                        </tr>
-                    }
-                }
+            <tbody id="MCompanyTableBody">
+                <partial name="MCompanyPartials/_MCompanyListPartial" for="Companies" />
             </tbody>
         </table>
     </div>
@@ -84,34 +93,41 @@
             });
 
             $(document).on("submit", "#MCompanyFormPartial", (ev) => {
-                ev.preventDefault();
-                //debugger;
-
-
-
-                //$.validator.unobtrusive.parse("form#MCompanyFormPartial");
-                let formValue = $("#MCompanyFormPartial").serialize();
-                //console.log(formValue);
+                ev.preventDefault();                
+                let formValue = $("#MCompanyFormPartial").serialize();                
                 if (formValue != undefined) {
-                    $.post("MCompany/AddMCompany", formValue, (resData) => {
+                    $.post("MCompany/AddMCompany", formValue, data => {
                         //debugger;
                         console.log("sukses");
-                        console.log(resData);
+                        //console.log(data);
+                        $("#MCompanyTableBody").empty();
+                        $("#MCompanyTableBody").append(data);
                         closeModal();
                     }).fail(data => {
                         //debugger;
                         console.log("gagal");
-                        console.log(data.responseText);
-                    }).done(() => {
-                        $.get("MCompany");
+                        console.log(data);
                     });
                 }
             });
 
+            $("#SearchCompanyForm").on("submit", (ev) => {
+                ev.preventDefault();
+                let searchFormValue = $("#SearchCompanyForm").serialize();
+
+                $.get("MCompany/Search", searchFormValue, data => {
+                    console.log("sukses");
+                    $("#MCompanyTableBody").empty();
+                    $("#MCompanyTableBody").append(data);
+                }).fail(data => {
+                    console.log("gagal");
+                    console.log(data.responseJSON);
+                })
+            })
+
             $(document).on("click", "#MCompanyModalCloser", () => {
                 closeModal();
             });
-
 
         });
     </script>  

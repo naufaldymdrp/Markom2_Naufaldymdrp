@@ -31,9 +31,8 @@ namespace Markom2.Web.Pages.Master
 
         public IList<MCompany> Companies { get; set; }
 
-        //[BindProperty]
-        //public MCompany Company { get; set; }
-        
+        public MCompany Company { get; set; }
+
         public Exception Error { get; set; }
 
         public async Task OnGetAsync()
@@ -49,6 +48,21 @@ namespace Markom2.Web.Pages.Master
             }
         }
 
+        public async Task<IActionResult> OnGetSearchAsync(MCompany company)
+        {
+            try
+            {
+                var result = await _mCompanyService.GetAsync(company);
+
+                return Partial("MCompanyPartials/_MCompanyListPartial", result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Terjadi error : {@ex}", ex);
+                return BadRequest(ex);
+            }
+        }
+
         public async Task<IActionResult> OnGetAddMCompanyPartialAsync()
         {
             try
@@ -57,13 +71,13 @@ namespace Markom2.Web.Pages.Master
 
                 var company = new MCompany { CreatedBy = currentUser.Id };
                 (MCompany, bool) tuple = (company, true);
-                return Partial("_MCompanyFormPartial", tuple);
+                return Partial("MCompanyPartials/_MCompanyFormPartial", tuple);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.ToString());
             }
-        }
+        }        
 
         public async Task<IActionResult> OnPostAddMCompanyAsync(MCompany Item1)
         {            
@@ -76,7 +90,10 @@ namespace Markom2.Web.Pages.Master
                 }
 
                 await _mCompanyService.AddAsync(Item1);
-                return new OkResult();
+
+                var companies = await _mCompanyService.GetAllAsync();
+
+                return Partial("MCompanyPartials/_MCompanyListPartial", companies);
             }
             catch (Exception ex)
             {
