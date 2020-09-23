@@ -2,53 +2,104 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@using System 
+@using Markom2.Web.Pages.Master
 @using Markom2.Repository.Models
-@model (MCompany, bool)
+@model (MCompany, MCompanyPartial)
 
-<form method="post" id="MCompanyFormPartial">
-    <div class="modal-header">
-        <h5 class="modal-title">Modal </h5>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-sm-6">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Item1.CreatedBy" />
-                <div class="form-group">
-                    <label asp-for="Item1.Code" class="control-label"></label>
-                    <input asp-for="Item1.Code" class="form-control" disabled />                    
-                    <span asp-validation-for="Item1.Code" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Item1.Phone" class="control-label"></label>
-                    <input asp-for="Item1.Phone" class="form-control" />
-                    <span asp-validation-for="Item1.Phone" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Item1.Email" class="control-label"></label>
-                    <input asp-for="Item1.Email" class="form-control" type="email" />
-                    <span asp-validation-for="Item1.Email" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label asp-for="Item1.Name" class="control-label"></label>
-                    <input asp-for="Item1.Name" class="form-control" type="text" />
-                    <span asp-validation-for="Item1.Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Item1.Address" class="control-label"></label>
-                    <input asp-for="Item1.Address" class="form-control" multiple />
-                    <span asp-validation-for="Item1.Address" class="text-danger"></span>
-                </div>
-            </div>
-        </div>        
-    </div>
-    <div class="modal-footer">
-        <div class="form-group">            
-            <input type="submit" class="btn btn-outline-success" id="MCompanyModalSubmit" value="Submit" />
-            <button type="button" class="btn btn-outline-danger" id="MCompanyModalCloser">click me</button>
+
+@{
+    var disabled = false;
+    var modalTitle = "";
+    var buttonId = "";
+    var formId = "";
+    if (Model.Item2 == MCompanyPartial.Add)
+    {
+        modalTitle = "Add Company";
+        buttonId = "MCompanyModalSubmit";
+        formId = "AddMCompanyForm";
+    }
+    else if (Model.Item2 == MCompanyPartial.Detail)
+    {
+        disabled = true;
+        modalTitle = "Detail Company";
+    }
+    else if (Model.Item2 == MCompanyPartial.Edit)
+    {
+        modalTitle = "Edit Company";
+        buttonId = "MCompanyModalSubmitEdit";
+        formId = "EditMCompanyForm";
+    }
+    else if (Model.Item2 == MCompanyPartial.Delete)
+    {
+        modalTitle = "Delete Company";
+        buttonId = "MCompanyModalSubmitDelete";
+        formId = "DeleteMCompanyForm";
+    }
+
+    <form method="post" class="MCompanyFormPartial" id="@formId">
+        <div class="modal-header">
+            <h5 class="modal-title">@modalTitle</h5>
         </div>
-    </div>
-</form>
+        <div class="modal-body">
+            <input type="hidden" asp-for="Item1.Id" />
+            <input type="hidden" asp-for="Item1.CreatedBy" />
+            @if (Model.Item2 == MCompanyPartial.Delete)
+            {
+                <h6>Are you sure want to delete this data</h6>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Item1.Code" class="control-label"></label>
+                            <input asp-for="Item1.Code" class="form-control" disabled />
+                            <span asp-validation-for="Item1.Code" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Item1.Phone" class="control-label"></label>
+                            <input asp-for="Item1.Phone" class="form-control" disabled="@disabled" />
+                            <span asp-validation-for="Item1.Phone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Item1.Email" class="control-label"></label>
+                            <input asp-for="Item1.Email" class="form-control" disabled="@disabled" />
+                            <span asp-validation-for="Item1.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="Item1.Name" class="control-label"></label>
+                            <input asp-for="Item1.Name" class="form-control" disabled="@disabled" />
+                            <span asp-validation-for="Item1.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Item1.Address" class="control-label"></label>
+                            <input asp-for="Item1.Address" class="form-control" disabled="@disabled" />
+                            <span asp-validation-for="Item1.Address" class="text-danger"></span>
+                        </div>                        
+                        @if (disabled)
+                        {
+                            <hr />
+                            <div class="form-group">
+                                <label asp-for="Item1.CreatedDate" class="control-label"></label>
+                                <input asp-for="Item1.CreatedDate" type="date" class="form-control" disabled />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Created By</label>
+                                <input asp-for="Item1.CreatedBy_Navigation.UserName" class="form-control" disabled />
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" id="@buttonId" value="Submit" hidden="@disabled" />
+                <button type="button" class="btn btn-warning" id="MCompanyModalCloser">Cancel</button>
+            </div>
+        </div>
+    </form>
+}

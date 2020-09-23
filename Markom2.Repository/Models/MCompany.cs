@@ -52,9 +52,9 @@ namespace Markom2.Repository.Models
         [ForeignKey("CreatedBy")]
         public IdentityUser CreatedBy_Navigation { get; set; }
               
-        [Column("Created_Date", TypeName = "datetime")]
         [Display(Name = "Created Date", Prompt = "Created Date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = false, DataFormatString = "{0:dd/MM/yyyy}")]        
+        [Column("Created_Date", TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
 
         //[MaxLength(50)]

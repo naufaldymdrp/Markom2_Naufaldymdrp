@@ -13,6 +13,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Markom2.Web.Pages.Master
 {
+    public enum MCompanyPartial
+    {
+        Add,
+        Detail,
+        Edit,
+        Delete
+    }
+
     [Authorize]
     public class MCompanyModel : PageModel
     {
@@ -70,14 +78,50 @@ namespace Markom2.Web.Pages.Master
                 var currentUser = await _userManager.GetUserAsync(User);
 
                 var company = new MCompany { CreatedBy = currentUser.Id };
-                (MCompany, bool) tuple = (company, true);
+                var tuple = (company, MCompanyPartial.Add);
                 return Partial("MCompanyPartials/_MCompanyFormPartial", tuple);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.ToString());
+                _logger.LogError("Terjadi error : {@ex}", ex);
+
+                return BadRequest(ex);
             }
-        }        
+        }  
+        
+        public async Task<IActionResult> OnGetDetailMCompanyPartialAsync(int dataId)
+        {
+            try
+            {
+                var company = await _mCompanyService.GetAsync(dataId);
+
+                var tuple = (company, MCompanyPartial.Detail);
+                return Partial("MCompanyPartials/_MCompanyFormPartial", tuple);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Terjadi error : {@ex}", ex);
+
+                return BadRequest(ex);
+            }
+        }
+
+        public async Task<IActionResult> OnGetEditMCompanyPartialAsync(int dataId)
+        {
+            try
+            {
+                var company = await _mCompanyService.GetAsync(dataId);
+
+                var tuple = (company, MCompanyPartial.Edit);
+                return Partial("MCompanyPartials/_MCompanyFormPartial", tuple);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Terjadi error : {@ex}", ex);
+
+                return BadRequest(ex);
+            }
+        }
 
         public async Task<IActionResult> OnPostAddMCompanyAsync(MCompany Item1)
         {            
@@ -91,16 +135,42 @@ namespace Markom2.Web.Pages.Master
 
                 await _mCompanyService.AddAsync(Item1);
 
-                var companies = await _mCompanyService.GetAllAsync();
+                Companies = await _mCompanyService.GetAllAsync();
 
-                return Partial("MCompanyPartials/_MCompanyListPartial", companies);
+                return Partial("MCompanyPartials/_MCompanyListPartial", Companies);
             }
             catch (Exception ex)
             {
                 _logger.LogInformation("Error : {@ex}", ex);
                 return BadRequest(ex.Message);
+            }            
+        }
+
+        public async Task<IActionResult> OnPostEditMCompanyAsync(MCompany item1)
+        {
+            try
+            {
+                if (!TryValidateModel(item1))
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var user = await _userManager.GetUserAsync(User);
+                item1.UpdatedBy = user.Id;
+                item1.UpdatedDate = DateTime.Now;
+
+                await _mCompanyService.EditAsync(item1);
+
+                Companies = await _mCompanyService.GetAllAsync();
+
+                return Partial("MCompanyPartials/_MCompanyListPartial", Companies);
             }
-            
+            catch (Exception ex)
+            {
+                _logger.LogError("Terjadi error : {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

@@ -5,6 +5,7 @@
 
 <div class="row">
     <div class="col-sm">
+        <h4>Company Master Data</h4>
         <!-- BreadCrumb Navigation -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -13,48 +14,51 @@
                 <li class="breadcrumb-item active" aria-current="page">Master Company</li>
             </ol>
         </nav>
-        <hr />
         <!-- /BreadCrumb Navigation -->
-        <h4>Company Master Data</h4>
-        <div class="row d-flex justify-content-end">
-            <div class="col-md-2">
-                <button href="#" id="AddCompanyModalButton" class="btn btn-primary">
-                    <span class="fas fa-plus" aria-hidden="true"></span>
-                </button>
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-sm-12">
-                <form class="row d-flex justify-content-end" id="SearchCompanyForm">
-                    @*<div class="col-md"></div>*@
-                    <div class="col-md">
-                        <input asp-for="Company.Code" class="form-control" />
-                    </div>
-                    <div class="col-md">
-                        <input asp-for="Company.Name" class="form-control" />
-                    </div>
-                    <div class="col-md">
-                        <input asp-for="Company.CreatedDate" class="form-control" />
-                    </div>
-                    <div class="col-md">
-                        <input asp-for="Company.CreatedBy" class="form-control" />
-                    </div>
-                    <div class="col-md">
-                        <button type="submit" href="#" id="SearchCompanyButton" class="btn btn-warning">
-                            <span class="fas fa-search-plus" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <br />
+        <!-- 'Transparent' table for filter form -->
+        <form class="row d-flex justify-content-end" id="SearchCompanyForm">
+            <table class="table table-borderless">
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button href="#" id="AddCompanyModalButton" class="btn btn-primary">
+                                <span class="fas fa-plus" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input asp-for="Company.Code" class="form-control" />
+                        </td>
+                        <td>
+                            <input asp-for="Company.Name" class="form-control" />
+                        </td>
+                        <td>
+                            <input asp-for="Company.CreatedDate" type="date" class="form-control" />
+                        </td>
+                        <td>
+                            <input asp-for="Company.CreatedBy" class="form-control" />
+                        </td>
+                        <td>
+                            <button type="submit" href="#" id="SearchCompanyButton" class="btn btn-warning">
+                                <span class="fas fa-search-plus" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <!-- /'Transparent' table for filter form -->
         <table class="table">
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(item => item.Companies[0].Id)</th>
                     <th>@Html.DisplayNameFor(item => item.Companies[0].Code)</th>
-                    <th>@Html.DisplayNameFor(item => item.Companies[0].Name)</th>                                       
+                    <th>@Html.DisplayNameFor(item => item.Companies[0].Name)</th>
                     <th>@Html.DisplayNameFor(item => item.Companies[0].CreatedDate)</th>
                     <th>Created By</th>
                     <th>Action</th>
@@ -69,10 +73,12 @@
 
 @section Scripts
 {
-    <partial name="_ValidationScriptsPartial" />  
+    <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
 
         $(document).ready(() => {
+            // Penambahan MCompany baru
+
             $("#AddCompanyModalButton").on("click", () => {
                 $.ajax({
                     url: "MCompany/AddMCompanyPartial",
@@ -88,13 +94,14 @@
                         $("#ModalContent").append(errDetailJson);
                     }
                 });
-                
+
                 showModal();
             });
 
-            $(document).on("submit", "#MCompanyFormPartial", (ev) => {
-                ev.preventDefault();                
-                let formValue = $("#MCompanyFormPartial").serialize();                
+            $(document).on("submit", "#AddMCompanyForm", (ev) => {
+                ev.preventDefault();
+                console.log("submit baru");
+                let formValue = $("#AddMCompanyForm").serialize();
                 if (formValue != undefined) {
                     $.post("MCompany/AddMCompany", formValue, data => {
                         //debugger;
@@ -111,6 +118,60 @@
                 }
             });
 
+            // / Penambahan MCompany baru
+
+            // Memuat Detail MCompany
+
+            $(document).on("click", "span.mcompany-detail-button", (ev) => {
+                let clickedId = {
+                    dataId: ev.target.id
+                };
+                $.get("MCompany/DetailMCompanyPartial", clickedId, (data) => {
+                    $("#ModalContent").empty();
+                    $("#ModalContent").append(data);
+                    showModal();
+                }).fail(data => {
+                    alert("gagal, cek kembali data atau hubungi Tim IT");
+                    console.log(data.responseText);
+                });
+            });
+
+            // /Memuat detail MCompany
+
+            /** Memuat Edit Company **/
+            $(document).on("click", "span.mcompany-edit-button", (ev) => {
+                let clickedId = {
+                    dataId: ev.target.id
+                };
+                $.get("MCompany/EditMCompanyPartial", clickedId, data => {
+                    console.log("edit-button sukses");
+                    $("#ModalContent").empty();
+                    $("#ModalContent").append(data);
+                    showModal();
+                }).fail(data => {
+                    alert("gagal, cek kembali data atau hubungi tim IT");
+                    console.log(data.responseText);
+                });
+            });
+            /** /Memuat Edit Company **/
+
+            // Melakukan edit Company 
+            $(document).on("submit", "#EditMCompanyForm", ev => {
+                ev.preventDefault();
+
+                var formValue = $(".MCompanyFormPartial").serialize();
+                $.post("MCompany/EditMCompany", formValue, data => {
+                    console.log("submit edit sukses");
+                    $("#MCompanyTableBody").empty();
+                    $("#MCompanyTableBody").append(data);
+                    closeModal();
+                }).fail(data => {
+                    alert("gagal, cek kembali data atau hubungi tim IT");
+                    console.log(data.responseText);
+                    closeModal();
+                });
+            });
+
             $("#SearchCompanyForm").on("submit", (ev) => {
                 ev.preventDefault();
                 let searchFormValue = $("#SearchCompanyForm").serialize();
@@ -121,15 +182,15 @@
                     $("#MCompanyTableBody").append(data);
                 }).fail(data => {
                     console.log("gagal");
-                    console.log(data.responseJSON);
-                })
-            })
+                    console.log(data.responseText);
+                });
+            });
 
             $(document).on("click", "#MCompanyModalCloser", () => {
                 closeModal();
             });
 
         });
-    </script>  
+    </script>
 
 }

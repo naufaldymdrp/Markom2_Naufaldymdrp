@@ -15,7 +15,11 @@
             <td>@Html.DisplayFor(_ => modelItem.Name)</td>
             <td>@Html.DisplayFor(_ => modelItem.CreatedDate)</td>
             <td>@Html.DisplayFor(_ => modelItem.CreatedBy_Navigation.UserName)</td>
-            <td>Klik</td>
+            <td>
+                <span class="fas fa-search-plus mcompany-detail-button" aria-hidden="true" id="@modelItem.Id"></span>
+                <span class="fas fa-pen mcompany-edit-button" aria-hidden="true" id="@modelItem.Id"></span>
+                <span class="fas fa-trash mcompany-delete-button" aria-hidden="true" id="@modelItem.Id"></span>
+            </td>
         </tr>
     }
 }

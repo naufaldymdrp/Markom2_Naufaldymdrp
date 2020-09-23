@@ -33,7 +33,20 @@ namespace Markom2.Repository.Business
 
             var result = await _context.M_Company
                 .Include(item => item.CreatedBy_Navigation)
+                .Where(item => item.IsDelete == false)
                 .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<MCompany> GetAsync(int id)
+        {
+            _logger.LogInformation("Pengambilan data tunggal MCompany berdasarkan data id dimulai");
+
+            var result = await _context.M_Company
+                .Include(item => item.CreatedBy_Navigation)
+                .Where(item => item.Id == id)
+                .FirstOrDefaultAsync();
 
             return result;
         }
@@ -125,7 +138,16 @@ namespace Markom2.Repository.Business
         {
             _logger.LogInformation("Perubahan data MCompany dimulai");
 
-            _context.Attach(data).State = EntityState.Modified;
+            var currentData = await _context.M_Company
+                .Where(item => item.Id == data.Id)
+                .FirstAsync();
+
+            currentData.Name = data.Name;
+            currentData.Address = data.Address;
+            currentData.Phone = data.Phone;
+            currentData.Email = data.Email;
+            currentData.UpdatedBy = data.UpdatedBy;
+            currentData.UpdatedDate = data.UpdatedDate;
 
             await _context.SaveChangesAsync();
         }

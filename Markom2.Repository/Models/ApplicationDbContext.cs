@@ -22,6 +22,7 @@ namespace Markom2.Repository.Models
                     .IsRequired();                    
 
                 buildAction.Property(item => item.CreatedDate)
+                    .HasColumnType("datetime")
                     .HasDefaultValueSql("GETDATE()");
             });
         }
