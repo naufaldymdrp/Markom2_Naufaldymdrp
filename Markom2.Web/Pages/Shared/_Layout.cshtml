@@ -71,6 +71,53 @@
             $("#ModalPartial").modal("hide");
             $("#ModalContent").empty();
         };
+
+        function getModalContent({ url, dataId, formClass }) {
+            $.get(url, { dataId }, data => {
+                $("#ModalContent").append(data);
+                $(formClass).removeData("validator");
+                $(formClass).removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse(formClass);
+                showModal();
+            }).fail(err => {
+                alert("Terjadi error, cek kembali data atau hubungi tim IT");
+                console.log(err.responseText);
+            });
+        }
+
+        function submit({ url, contentType, headers, data, keterangan, tableBodyId }) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: contentType,
+                headers: headers,
+                data: data
+            }).done(function (data) {
+                $(tableBodyId).empty();
+                $(tableBodyId).append(data);
+                alert(keterangan);
+                closeModal();
+            }).fail(function (errData) {
+                console.log("Gagal, keterangan : " + errData.responseText);
+                alert("Gagal mengeluarkan dialog, cek kembali data atau hubungi tim IT");
+                closeModal();
+            });
+        }
+
+        function search({ url, searchItem, tableBodyId }) {
+            $.get(url, searchItem, data => {
+                alert("Item found");
+                $(tableBodyId).empty();
+                $(tableBodyId).append(data);
+            }).fail(function (errData) {
+                alert("Search failed");
+                console.log(errData.responseText);
+            });
+        }
+
+        const defaultContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+        const jsonContentType = "application/json; charset=UTF-8";
+
     </script>
     <partial name="_ModalPartial" />
     @RenderSection("Scripts", required: false)

@@ -74,83 +74,49 @@
 @section Scripts
 {
     <partial name="_ValidationScriptsPartial" />
-    <script type="text/javascript">
+    <script type="text/javascript">       
+
+        let tableBodyId = "#MCompanyTableBody";
+        let formClass = "form.MCompanyFormPartial";
 
         $(document).ready(() => {
             // Penambahan MCompany baru
-
             $("#AddCompanyModalButton").on("click", () => {
-                $.ajax({
-                    url: "MCompany/AddMCompanyPartial",
-                    accepts: "text/html",
-                    success: e => {
-                        $("#ModalContent").append(e);
-                        $("form#MCompanyFormPartial").removeData("validator");
-                        $("form#MCompanyFormPartial").removeData("unobtrusiveValidation");
-                        $.validator.unobtrusive.parse("form#MCompanyFormPartial");
-                    },
-                    error: err => {
-                        var errDetailJson = err.responseJson;
-                        $("#ModalContent").append(errDetailJson);
-                    }
+                getModalContent({
+                    url: "MCompany/AddMCompanyPartial"
                 });
-
-                showModal();
             });
 
             $(document).on("submit", "#AddMCompanyForm", (ev) => {
                 ev.preventDefault();
                 console.log("submit baru");
-                let formValue = $("#AddMCompanyForm").serialize();
-                if (formValue != undefined) {
-                    $.post("MCompany/AddMCompany", formValue, data => {
-                        //debugger;
-                        console.log("sukses");
-                        //console.log(data);
-                        $("#MCompanyTableBody").empty();
-                        $("#MCompanyTableBody").append(data);
-                        closeModal();
-                    }).fail(data => {
-                        //debugger;
-                        console.log("gagal");
-                        console.log(data);
-                    });
-                }
+                let formValue = $("#AddMCompanyForm").serialize();                
+                submit({
+                    url: "MCompany/AddMCompany",
+                    contentType: defaultContentType,                    
+                    data: formValue,
+                    keterangan: "New company has been successfully added",
+                    tableBodyId
+                });
             });
-
             // / Penambahan MCompany baru
 
             // Memuat Detail MCompany
-
             $(document).on("click", "span.mcompany-detail-button", (ev) => {
-                let clickedId = {
-                    dataId: ev.target.id
-                };
-                $.get("MCompany/DetailMCompanyPartial", clickedId, (data) => {
-                    $("#ModalContent").empty();
-                    $("#ModalContent").append(data);
-                    showModal();
-                }).fail(data => {
-                    alert("gagal, cek kembali data atau hubungi Tim IT");
-                    console.log(data.responseText);
+                getModalContent({
+                    url: "MCompany/DetailMCompanyPartial",
+                    dataId: ev.target.id,
+                    formClass
                 });
             });
-
             // /Memuat detail MCompany
 
             /** Memuat Edit Company **/
             $(document).on("click", "span.mcompany-edit-button", (ev) => {
-                let clickedId = {
-                    dataId: ev.target.id
-                };
-                $.get("MCompany/EditMCompanyPartial", clickedId, data => {
-                    console.log("edit-button sukses");
-                    $("#ModalContent").empty();
-                    $("#ModalContent").append(data);
-                    showModal();
-                }).fail(data => {
-                    alert("gagal, cek kembali data atau hubungi tim IT");
-                    console.log(data.responseText);
+                getModalContent({
+                    url: "MCompany/EditMCompanyPartial",
+                    dataId: ev.target.id,
+                    formClass
                 });
             });
             /** /Memuat Edit Company **/
@@ -158,33 +124,22 @@
             // Melakukan edit Company 
             $(document).on("submit", "#EditMCompanyForm", ev => {
                 ev.preventDefault();
-
-                var formValue = $(".MCompanyFormPartial").serialize();
-                $.post("MCompany/EditMCompany", formValue, data => {
-                    console.log("submit edit sukses");
-                    $("#MCompanyTableBody").empty();
-                    $("#MCompanyTableBody").append(data);
-                    closeModal();
-                }).fail(data => {
-                    alert("gagal, cek kembali data atau hubungi tim IT");
-                    console.log(data.responseText);
-                    closeModal();
+                var formValue = $(".MCompanyFormPartial").serialize();                
+                submit({
+                    url: "MCompany/EditMCompany",
+                    contentType: defaultContentType,
+                    data: formValue,
+                    keterangan: "Company has been successfully updated",
+                    tableBodyId
                 });
             });
 
             // Memuat formulir delete form
             $(document).on("click", "span.mcompany-delete-button", ev => {
-                var clickedId = {
-                    dataId: ev.target.id
-                };
-
-                $.get("MCompany/DeleteMCompanyPartial", clickedId, data => {
-                    $("#ModalContent").empty();
-                    $("#ModalContent").append(data);
-                    showModal();
-                }).fail(data => {
-                    alert("gagal, cek kembali data atau hubungi tim IT");
-                    console.log(data.responseText);
+                getModalContent({
+                    url: "MCompany/DeleteMCompanyPartial",
+                    dataId: ev.target.id,
+                    formClass
                 });
             });
             // /Memuat formulir delete form
@@ -192,42 +147,30 @@
             // Melakukan delete (ubah isDelete) 
             $(document).on("submit", "#DeleteMCompanyForm", ev => {
                 ev.preventDefault();                
-                var data = {
+                let data = {
                     DataId: $("#DeleteMCompanyForm input[name='Item1.Id']").val()
-                };         
-                console.log(JSON.stringify(data));
-                $.ajax({
-                    type: "POST",
+                }; 
+                let headers = {
+                    RequestVerificationToken: $("#DeleteMCompanyForm input[name='__RequestVerificationToken']").val()
+                };
+                submit({
                     url: "MCompany/DeleteMCompany",
-                    headers: {
-                        "RequestVerificationToken": $("#DeleteMCompanyForm input[name='__RequestVerificationToken']").val()
-                    },
+                    contentType: jsonContentType,
+                    headers,
                     data: JSON.stringify(data),
-                    contentType: "application/json; charset=utf-8"                    
-                }).done((data) => {
-                    console.log("sukses");
-                    $("#MCompanyTableBody").empty();
-                    $("#MCompanyTableBody").append(data);
-                    closeModal();
-                }).fail(data => {
-                    alert(`gagal, cek kembali data atau hubungi tim IT, keterangan ${data.responseText}`);
-                    console.log(data.responseText);
-                    closeModal();
-                });                
+                    keterangan: "Company has been successfully delete",
+                    tableBodyId
+                });
             });
-            // /Melakukan delete
+            // /Melakukan delete            
 
             $("#SearchCompanyForm").on("submit", (ev) => {
                 ev.preventDefault();
-                let searchFormValue = $("#SearchCompanyForm").serialize();
-
-                $.get("MCompany/Search", searchFormValue, data => {
-                    console.log("sukses");
-                    $("#MCompanyTableBody").empty();
-                    $("#MCompanyTableBody").append(data);
-                }).fail(data => {
-                    console.log("gagal");
-                    console.log(data.responseText);
+                let searchFormValue = $("#SearchCompanyForm").serialize();                
+                search({
+                    url: "MCompany/Search",
+                    searchItem: searchFormValue,
+                    tableBodyId
                 });
             });
 
