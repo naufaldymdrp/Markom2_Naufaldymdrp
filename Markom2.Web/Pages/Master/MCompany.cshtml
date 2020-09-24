@@ -172,6 +172,51 @@
                 });
             });
 
+            // Memuat formulir delete form
+            $(document).on("click", "span.mcompany-delete-button", ev => {
+                var clickedId = {
+                    dataId: ev.target.id
+                };
+
+                $.get("MCompany/DeleteMCompanyPartial", clickedId, data => {
+                    $("#ModalContent").empty();
+                    $("#ModalContent").append(data);
+                    showModal();
+                }).fail(data => {
+                    alert("gagal, cek kembali data atau hubungi tim IT");
+                    console.log(data.responseText);
+                });
+            });
+            // /Memuat formulir delete form
+
+            // Melakukan delete (ubah isDelete) 
+            $(document).on("submit", "#DeleteMCompanyForm", ev => {
+                ev.preventDefault();                
+                var data = {
+                    DataId: $("#DeleteMCompanyForm input[name='Item1.Id']").val()
+                };         
+                console.log(JSON.stringify(data));
+                $.ajax({
+                    type: "POST",
+                    url: "MCompany/DeleteMCompany",
+                    headers: {
+                        "RequestVerificationToken": $("#DeleteMCompanyForm input[name='__RequestVerificationToken']").val()
+                    },
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8"                    
+                }).done((data) => {
+                    console.log("sukses");
+                    $("#MCompanyTableBody").empty();
+                    $("#MCompanyTableBody").append(data);
+                    closeModal();
+                }).fail(data => {
+                    alert(`gagal, cek kembali data atau hubungi tim IT, keterangan ${data.responseText}`);
+                    console.log(data.responseText);
+                    closeModal();
+                });                
+            });
+            // /Melakukan delete
+
             $("#SearchCompanyForm").on("submit", (ev) => {
                 ev.preventDefault();
                 let searchFormValue = $("#SearchCompanyForm").serialize();

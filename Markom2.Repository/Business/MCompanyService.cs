@@ -152,7 +152,7 @@ namespace Markom2.Repository.Business
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int dataId)
+        public async Task DeleteAsync(int dataId, string updatedBy, DateTime updatedDate)
         {
             _logger.LogInformation("Penghapusan data MCompany (ubah IsDelete) dimulai");
 
@@ -160,9 +160,9 @@ namespace Markom2.Repository.Business
                 .Where(item => item.Id == dataId)
                 .FirstOrDefaultAsync();
 
-            entity.IsDelete = false;
-
-            _context.Attach(entity).State = EntityState.Modified;
+            entity.IsDelete = true;
+            entity.UpdatedBy = updatedBy;
+            entity.UpdatedDate = updatedDate;
 
             await _context.SaveChangesAsync();
         }

@@ -21,6 +21,11 @@ namespace Markom2.Web.Pages.Master
         Delete
     }
 
+    public class MCompanyJson
+    {
+        public string DataId { get; set; }
+    }
+
     [Authorize]
     public class MCompanyModel : PageModel
     {
@@ -67,7 +72,7 @@ namespace Markom2.Web.Pages.Master
             catch (Exception ex)
             {
                 _logger.LogError("Terjadi error : {@ex}", ex);
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -85,7 +90,7 @@ namespace Markom2.Web.Pages.Master
             {
                 _logger.LogError("Terjadi error : {@ex}", ex);
 
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }  
         
@@ -102,7 +107,7 @@ namespace Markom2.Web.Pages.Master
             {
                 _logger.LogError("Terjadi error : {@ex}", ex);
 
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -119,7 +124,7 @@ namespace Markom2.Web.Pages.Master
             {
                 _logger.LogError("Terjadi error : {@ex}", ex);
 
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -160,6 +165,46 @@ namespace Markom2.Web.Pages.Master
                 item1.UpdatedDate = DateTime.Now;
 
                 await _mCompanyService.EditAsync(item1);
+
+                Companies = await _mCompanyService.GetAllAsync();
+
+                return Partial("MCompanyPartials/_MCompanyListPartial", Companies);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Terjadi error : {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> OnGetDeleteMCompanyPartial(int dataId)
+        {
+            try
+            {
+                var company = await _mCompanyService.GetAsync(dataId);
+                var tuple = (company, MCompanyPartial.Delete);
+
+                return Partial("MCompanyPartials/_MCompanyFormPartial", tuple);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Terjdi error : {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+        
+        public async Task<IActionResult> OnPostDeleteMCompanyAsync([FromBody] MCompanyJson data)
+        {
+            try
+            {
+                var dataId = Convert.ToInt32(data.DataId);
+                var user = await _userManager.GetUserAsync(User);
+                var userId = user.Id;
+                var updatedDate = DateTime.Now;
+
+                await _mCompanyService.DeleteAsync(dataId, userId, updatedDate);
 
                 Companies = await _mCompanyService.GetAllAsync();
 
