@@ -106,7 +106,6 @@
 
         function search({ url, searchItem, tableBodyId }) {
             $.get(url, searchItem, data => {
-                alert("Item found");
                 $(tableBodyId).empty();
                 $(tableBodyId).append(data);
             }).fail(function (errData) {

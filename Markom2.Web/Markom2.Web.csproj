@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Markom2.Repository\Markom2.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Shared\MEmployeePartials\" />
+  </ItemGroup>
+
 </Project>

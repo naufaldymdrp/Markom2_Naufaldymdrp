@@ -1,0 +1,47 @@
+﻿@page "{handler?}"
+@model Markom2.Web.Pages.Master.MEmployeeModel
+@{
+}
+
+<div class="row">
+    <div class="col-sm">
+        <h4>Employee Master Data</h4>
+        <!-- BreadCrumb Navigation -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">Master</li>
+                <li class="breadcrumb-item active" aria-current="page">Employee</li>
+            </ol>
+        </nav>
+        <!-- /BreadCrumb Navigation -->
+        <!-- Transparent table for filter form -->
+        <form class="row d-flex justify-content-center" id="SearchEmployeeForm">
+            <table>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button href="#" id="AddEmployeeModalButton" class="btn btn-primary">
+                                <span class="fas fa-plus" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input asp-for="Employee.Code" class="form-control" />
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <!-- /Transparent table for filter form -->
+    </div>
+</div>

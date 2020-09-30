@@ -19,13 +19,25 @@ namespace Markom2.Repository.Models
             builder.Entity<MCompany>(buildAction =>
             {
                 buildAction.Property(item => item.Code)
-                    .IsRequired();                    
+                    .IsRequired();
 
                 buildAction.Property(item => item.CreatedDate)
-                    .HasColumnType("datetime")
+                    .IsRequired()
+                    .HasDefaultValueSql("GETDATE()");
+            });
+
+            builder.Entity<MEmployee>(buildAction =>
+            {
+                buildAction.Property(item => item.Code)
+                    .IsRequired();
+
+                buildAction.Property(item => item.CreatedDate)
+                    .IsRequired()
                     .HasDefaultValueSql("GETDATE()");
             });
         }
+
+        public DbSet<MEmployee> M_Employee { get; set; }
 
         public DbSet<MCompany> M_Company { get; set; }
     }
