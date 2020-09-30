@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Markom2.Repository.DTOs
+namespace Markom2.Repository.ViewModels
 {
-    public class MEmployeeSearchModel
+    public class MEmployeeViewModel
     {
         [MaxLength(50)]
         public string Code { get; set; }

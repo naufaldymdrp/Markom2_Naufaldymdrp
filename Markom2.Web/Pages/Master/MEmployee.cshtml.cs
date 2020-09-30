@@ -23,6 +23,8 @@ namespace Markom2.Web.Pages.Master
 
         public MEmployee Employee { get; set; }
 
+        public MEmployeeViewModel
+
         public void OnGet()
         {
         }
