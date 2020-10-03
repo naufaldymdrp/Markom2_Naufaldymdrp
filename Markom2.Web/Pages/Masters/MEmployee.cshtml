@@ -1,0 +1,81 @@
+﻿@page "{handler?}"
+@model Markom2.Web.Pages.Masters.MEmployeeModel
+@{
+}
+
+<div class="row">
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-header">
+                <h4>Employee Master Data</h4>
+            </div>
+            <div class="card-body">
+                <!-- BreadCrumb Navigation -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active" aria-current="page">Employee</li>
+                    </ol>
+                </nav>
+                <!-- /BreadCrumb Navigation -->
+                <!-- Search functionality -->
+                <partial name="MEmployeePartials/_MEmployeeSearchPartial" for="EmployeeView" />
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(item => item.EmployeeViewList[0].Id)</th>
+                            <th>@Html.DisplayNameFor(item => item.EmployeeViewList[0].Code)</th>
+                            <th>@Html.DisplayNameFor(item => item.EmployeeViewList[0].Name)</th>
+                            <th>@Html.DisplayNameFor(item => item.EmployeeViewList[0].CompanyName)</th>
+                            <th>@Html.DisplayNameFor(item => item.EmployeeViewList[0].CreatedDate)</th>                            
+                            <th>@Html.DisplayNameFor(item => item.EmployeeViewList[0].CreatedBy)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="MEmployeeTableBody">
+                        <partial name="MEmployeePartials/_MEmployeeViewListPartial" for="EmployeeViewList" />
+                    </tbody>
+                </table>
+            </div>
+        </div>        
+    </div>
+</div>
+
+@section Scripts 
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        let tableBodyId = "#MEmployeeTableBody";
+        let formClass = "form.MEmployeeFormPartial";
+
+        $(document).ready(function () {
+            // penambahan Employee baru
+            $("#AddEmployeeModalButton").on("click", function (ev) {
+                ev.preventDefault();
+                getModalContent({
+                    url: "MEmployee/AddMEmployeePartial"
+                });
+            });
+
+            $(document).on("click", "#MEmployeeModalSubmit", function (ev) {
+                ev.preventDefault();
+                let formValue = $("#AddEmployeeForm").serialize();
+                submit({
+                    url: "MEmployee/AddMEmployee",
+                    contentType: defaultContentType,
+                    data: formValue,
+                    keterangan: "New employee has been successfully added",
+                    tableBodyId
+                });
+            });
+            // /penambahan employee baru
+
+            // penutupan modal
+            $(document).on("click", "#MEmployeeModalCloser", function () {
+                closeModal();
+            });            
+            // /penutupan modal
+        })
+    </script>
+}

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Markom2.Repository.Business
+namespace Markom2.Repository.Business.Masters
 {
     public class MCompanyService
         : ITableService<MCompany>
@@ -31,7 +31,7 @@ namespace Markom2.Repository.Business
         {
             _logger.LogInformation("Pengambilan data MCompany dimulai");
 
-            var result = await _context.M_Company
+            var result = await _context.MCompanies
                 .Include(item => item.CreatedBy_Navigation)
                 .Where(item => item.IsDelete == false)
                 .ToListAsync();
@@ -43,7 +43,7 @@ namespace Markom2.Repository.Business
         {
             _logger.LogInformation("Pengambilan data tunggal MCompany berdasarkan data id dimulai");
 
-            var result = await _context.M_Company
+            var result = await _context.MCompanies
                 .Include(item => item.CreatedBy_Navigation)
                 .Where(item => item.Id == id)
                 .FirstOrDefaultAsync();
@@ -51,36 +51,7 @@ namespace Markom2.Repository.Business
             return result;
         }
 
-        /// <summary>
-        /// Pengambilan data MCompany berdasarkan Id
-        /// </summary>
-        /// <param name="companyCode">kode dari MCompany</param>
-        /// <returns>data MCompany berdasarkan Id dalam bentuk IList task</returns>
-        public async Task<IList<MCompany>> GetAsync(string companyCode, string companyName)
-        {
-            _logger.LogInformation("Pengambilan data MCompany berdasarkan id dimulai");            
-
-            var result = await _context.M_Company
-                .Where(item => item.Code.Contains(companyCode) || item.Code.Contains(companyName))
-                .ToListAsync();
-
-            return result;
-        }
-
-        public async Task<string> GetLastId()
-        {
-            var lastItem = await _context.Database
-                .ExecuteSqlRawAsync("SELECT IDENT_CURRENT('M_Company') AS LastId");
-
-            var lastId = lastItem + 1;
-
-            var stringId = lastId.ToString();
-            var leadingZeros = "0000";
-            var cutLeadingZeros = leadingZeros.AsMemory().Slice(stringId.Length);
-            var result = "CP" + cutLeadingZeros.ToString() + stringId;
-
-            return result;
-        }
+          
 
         public async Task AddAsync(MCompany data)
         {
@@ -117,7 +88,7 @@ namespace Markom2.Repository.Business
         {
             _logger.LogInformation("Pencarian data MCompany dimulai");
 
-            var result = await _context.M_Company
+            var result = await _context.MCompanies
                             .Include(item => item.CreatedBy_Navigation)
                             .Where(item => EF.Functions.Like(item.Code, $"%{targetData.Code}%") 
                                 && EF.Functions.Like(item.Name, $"%{targetData.Name}%"))                            
@@ -138,7 +109,7 @@ namespace Markom2.Repository.Business
         {
             _logger.LogInformation("Perubahan data MCompany dimulai");
 
-            var currentData = await _context.M_Company
+            var currentData = await _context.MCompanies
                 .Where(item => item.Id == data.Id)
                 .FirstAsync();
 
@@ -156,7 +127,7 @@ namespace Markom2.Repository.Business
         {
             _logger.LogInformation("Penghapusan data MCompany (ubah IsDelete) dimulai");
 
-            var entity = await _context.M_Company
+            var entity = await _context.MCompanies
                 .Where(item => item.Id == dataId)
                 .FirstOrDefaultAsync();
 

@@ -1,0 +1,92 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Markom2.Web.Pages.Masters
+@using Markom2.Repository.Models
+@model (MEmployee, MEmployeePartial, SelectList)
+
+@{ 
+    var disabled = false;
+    var modalTitle = "";
+    var buttonId = "";
+    var formId = "";
+
+    if (Model.Item2 == MEmployeePartial.Add)
+    {
+        modalTitle = "Add Employee";
+        buttonId = "MEmployeeModalSubmit";
+        formId = "AddEmployeeForm";
+    }
+    else if (Model.Item2 == MEmployeePartial.Detail)
+    {
+        disabled = true;
+        modalTitle = "Employee Detail";
+    }
+    else if (Model.Item2 == MEmployeePartial.Edit)
+    {
+        modalTitle = "Edit Employee";
+        buttonId = "MEmployeeModalSubmitEdit";
+        formId = "EditEmployeeForm";
+    }
+    else if (Model.Item2 == MEmployeePartial.Delete)
+    {
+        modalTitle = "Delete Employee";
+        buttonId = "MEmployeeModalSubmitDelete";
+        formId = "DeleteMEmployeeForm";
+    }
+
+    <form method="post" class="MEmployeeFormPartial" id="@formId">
+        <div class="modal-header">
+            <h5 class="modal-title">@modalTitle</h5>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" asp-for="Item1.Id" />
+            <input type="hidden" asp-for="Item1.CreatedBy" />
+            @if (Model.Item2 == MEmployeePartial.Delete)
+            {
+                <h6>Are you sure want to delete this data ?</h6>
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Item1.Code" class="control-label"></label>
+                            <input asp-for="Item1.Code" class="form-control" disabled="@disabled" />
+                            <span asp-validation-for="Item1.Code" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Item1.FirstName" class="control-label"></label>
+                            <input asp-for="Item1.FirstName" class="form-control" disabled="@disabled" />
+                            <span asp-validation-for="Item1.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Item1.LastName" class="control-label"></label>
+                            <input asp-for="Item1.LastName" class="form-control" disabled="@disabled" />
+                            <span asp-validation-for="Item1.LastName" class="text-danger"></span>
+                        </div>                        
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label asp-for="Item1.MCompanyId" class="control-label"></label>
+                            <select asp-for="Item1.MCompanyId" asp-items="Model.Item3" class="form-control" disabled="@disabled"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Item1.Email" class="control-label"></label>
+                            <input asp-for="Item1.Email" class="form-control" disabled="@disabled" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <div class="form-group">
+                <button type="submit" class="btn @(!disabled ? "btn-primary" : "btn-danger")" 
+                        id="@buttonId" hidden="@disabled">Submit</button>
+                <button type="button" class="btn btn-warning" id="MEmployeeModalCloser">Cancel</button>
+            </div>
+        </div>
+    </form>
+}

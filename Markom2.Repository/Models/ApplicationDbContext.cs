@@ -28,8 +28,8 @@ namespace Markom2.Repository.Models
 
             builder.Entity<MEmployee>(buildAction =>
             {
-                buildAction.Property(item => item.Code)
-                    .IsRequired();
+                buildAction.HasIndex(item => item.Code)
+                    .IsUnique();
 
                 buildAction.Property(item => item.CreatedDate)
                     .IsRequired()
@@ -37,8 +37,8 @@ namespace Markom2.Repository.Models
             });
         }
 
-        public DbSet<MEmployee> M_Employee { get; set; }
+        public DbSet<MCompany> MCompanies { get; set; }
 
-        public DbSet<MCompany> M_Company { get; set; }
+        public DbSet<MEmployee> MEmployees { get; set; }
     }
 }

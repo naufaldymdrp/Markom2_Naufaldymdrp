@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Business\Transactions\" />
     <Folder Include="IdentityFlow\" />
   </ItemGroup>
 

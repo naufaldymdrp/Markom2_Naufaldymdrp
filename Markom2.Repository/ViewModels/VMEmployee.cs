@@ -6,20 +6,26 @@ using System.Text;
 
 namespace Markom2.Repository.ViewModels
 {
-    public class MEmployeeViewModel
+    public class VMEmployee
     {
+        public int Id { get; set; }
+
         [MaxLength(50)]
+        [Display(Name = "Code", Prompt = "Code")]
         public string Code { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(101)]
+        [Display(Name = "Name", Prompt = "Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Company Name", Prompt = "Company Name")]
         public string CompanyName { get; set; }
 
         [Display(Name = "Created By", Prompt = "Created By")]
         public string CreatedBy { get; set; }
 
         [Display(Name = "Created Date", Prompt = "Created Date")]
-        public DateTime CreatedDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? CreatedDate { get; set; }
     }
 }

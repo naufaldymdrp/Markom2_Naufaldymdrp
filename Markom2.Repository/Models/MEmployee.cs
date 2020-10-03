@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -13,20 +14,25 @@ namespace Markom2.Repository.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]        
         [MaxLength(50)]
         [Column("Employee_Number", TypeName = "varchar(50)")]
+        [DisplayName("Employee Number")]
         public string Code { get; set; }
 
         [Required]
         [MaxLength(50)]
         [Column("First_Name", TypeName = "varchar(50)")]
+        [DisplayName("First Name")]
         public string FirstName { get; set; }
 
         [MaxLength(50)]
         [Column("Last_Name", TypeName = "varchar(50)")]
+        [DisplayName("Last Name")]
         public string LastName { get; set; }
 
         [Column("M_Company_Id")]
+        [DisplayName("Company")]
         public int? MCompanyId { get; set; }
 
         [ForeignKey("MCompanyId")]
@@ -34,9 +40,10 @@ namespace Markom2.Repository.Models
 
         [Column(TypeName = "varchar(150)")]
         [DataType(DataType.EmailAddress)]
+        [DisplayName("Email")]
         public string Email { get; set; }
 
-        [Column("Is_Delete")]
+        [Column("Is_Delete")]        
         public bool IsDelete { get; set; }
 
         [Required]

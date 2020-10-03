@@ -36,8 +36,9 @@
                                     Master Data
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" asp-area="" asp-page="/Master/MCompany">Company Master Data</a>
-                                </div>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Masters/MCompany">Companies</a>
+                                    <a class="dropdown-item" asp-area="" asp-page="/Masters/MEmployee">Employees</a>
+                                </div>                                
                             </li>
                         }
                     </ul>
@@ -99,7 +100,7 @@
                 closeModal();
             }).fail(function (errData) {
                 console.log("Gagal, keterangan : " + errData.responseText);
-                alert("Gagal mengeluarkan dialog, cek kembali data atau hubungi tim IT");
+                alert(`Gagal melakukan submit, keterangan : ${errData.responseText}`);
                 closeModal();
             });
         }

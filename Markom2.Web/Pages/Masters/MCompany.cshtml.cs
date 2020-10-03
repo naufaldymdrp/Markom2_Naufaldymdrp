@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Markom2.Repository.Business;
+using Markom2.Repository.Business.Masters;
 using Markom2.Repository.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
 
-namespace Markom2.Web.Pages.Master
+namespace Markom2.Web.Pages.Masters
 {
     public enum MCompanyPartial
     {

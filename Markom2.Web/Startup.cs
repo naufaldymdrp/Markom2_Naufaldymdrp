@@ -34,7 +34,7 @@ namespace Markom2.Web
             services.AddDefaultIdentity<IdentityUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddScoped<MCompanyService>();
+            services.AddMasterServices();
             services.AddRazorPages();
         }
 
