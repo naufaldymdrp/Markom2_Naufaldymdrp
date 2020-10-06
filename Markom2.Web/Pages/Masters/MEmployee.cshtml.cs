@@ -215,5 +215,19 @@ namespace Markom2.Web.Pages.Masters
                 return BadRequest(ex.Message);
             }
         }
+
+        public async Task<IActionResult> OnGetSearch(VMEmployee employee)
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured, {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
