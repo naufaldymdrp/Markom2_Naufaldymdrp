@@ -28,6 +28,7 @@ namespace Markom2.Repository.Business.Masters
             var result = await _dbContext.MEmployees
                 .Include(item => item.MCompany_Navigation)
                 .Include(item => item.CreatedBy_Navigation)
+                .Where(item => item.IsDelete == false)
                 .Select(item => new VMEmployee
                 {
                     Id = item.Id,
@@ -55,6 +56,19 @@ namespace Markom2.Repository.Business.Masters
             return result;
         }
 
+        public async Task<MEmployee> GetAsync(int dataId)
+        {
+            _logger.LogInformation("Single employee data is being collected based on Id");
+
+            var result = await _dbContext.MEmployees
+                .Include(item => item.MCompany_Navigation)
+                .FirstOrDefaultAsync(item => item.Id == dataId);
+
+            _logger.LogInformation("The employee data is : {@result}", result);
+
+            return result;
+        }
+
         public async Task AddAsync(MEmployee entity)
         {
             _logger.LogInformation("Adding new employee, entity : {@entity}", entity);
@@ -66,6 +80,42 @@ namespace Markom2.Repository.Business.Masters
 
             _dbContext.MEmployees
                 .Add(entity);
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task EditAsync(MEmployee entity)
+        {
+            _logger.LogInformation("Editing employee data based on its id, entity : {@entity}", entity);
+
+            var targetEntity = await _dbContext.MEmployees
+                .Where(item => item.Id == entity.Id)
+                .FirstOrDefaultAsync();
+
+            targetEntity.Code = entity.Code;
+            targetEntity.FirstName = entity.FirstName;
+            targetEntity.LastName = entity.LastName;
+            targetEntity.MCompanyId = entity.MCompanyId;
+            targetEntity.Email = entity.Email;
+
+            targetEntity.UpdatedBy = entity.UpdatedBy;
+            targetEntity.UpdatedDate = entity.UpdatedDate;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int dataId, string updatedBy, DateTime updatedDate)
+        {
+            _logger.LogInformation("Deleting employee (IsDelete=1) based on id : {@dataId}", dataId);
+
+            var targetEntity = await _dbContext.MEmployees
+                .Where(item => item.Id == dataId)
+                .FirstOrDefaultAsync();
+
+            targetEntity.IsDelete = true;
+
+            targetEntity.UpdatedBy = updatedBy;
+            targetEntity.UpdatedDate = updatedDate;
 
             await _dbContext.SaveChangesAsync();
         }

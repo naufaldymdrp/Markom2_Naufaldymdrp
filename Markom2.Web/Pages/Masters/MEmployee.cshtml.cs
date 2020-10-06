@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Markom2.Repository.Business.Masters;
 using Markom2.Repository.Models;
 using Markom2.Repository.ViewModels;
+using Markom2.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -103,6 +104,113 @@ namespace Markom2.Web.Pages.Masters
             catch (Exception ex)
             {
                 _logger.LogError("Terjadi error, karena {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> OnGetMEmployeeDetailPartialAsync(int dataId)
+        {
+            try
+            {
+                var result = await _mEmployeeService.GetAsync(dataId);
+
+                (MEmployee, MEmployeePartial, SelectList) tuple = (result, MEmployeePartial.Detail, null);
+
+                return Partial("MEmployeePartials/_MEmployeeFormPartial", tuple);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured, {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> OnGetEditPartialAsync(int dataId)
+        {
+            try
+            {
+                var result = await _mEmployeeService.GetAsync(dataId);
+
+                var companies = await _mCompanyService.GetAllAsync();
+
+                var selectList = new SelectList(companies, nameof(MCompany.Id), nameof(MCompany.Name));
+
+                return Partial("MEmployeePartials/_MEmployeeFormPartial", (result, MEmployeePartial.Edit, selectList));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured : , {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> OnPostEditAsync(MEmployee item1)
+        {
+            try
+            {
+                if (!TryValidateModel(item1))
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var user = await _userManager.GetUserAsync(User);
+                item1.UpdatedBy = user.Id;
+                item1.UpdatedDate = DateTime.Now;
+
+                await _mEmployeeService.EditAsync(item1);
+
+                var employees = await _mEmployeeService.GetAllAsync();
+
+                return Partial("MEmployeePartials/_MEmployeeViewListPartial", employees);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured : {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> OnGetDeletePartialAsync(int dataId)
+        {
+            try
+            {
+                var employee = await _mEmployeeService.GetAsync(dataId);
+
+                (MEmployee, MEmployeePartial, SelectList) tuple = (employee, MEmployeePartial.Delete, null);
+
+                return Partial("MEmployeePartials/_MEmployeeFormPartial", tuple);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured : {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync([FromBody] JsonDataId data)
+        {
+            try
+            {
+                var dataId = Convert.ToInt32(data.DataId);
+                var user = await _userManager.GetUserAsync(User);
+
+                var updatedBy = user.Id;
+                var updatedDate = DateTime.Now;
+
+                await _mEmployeeService.DeleteAsync(dataId, updatedBy, updatedDate);
+
+                var employees = await _mEmployeeService.GetAllAsync();
+
+                return Partial("MEmployeePartials/_MEmployeeViewListPartial", employees);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured, {@ex}", ex);
 
                 return BadRequest(ex.Message);
             }

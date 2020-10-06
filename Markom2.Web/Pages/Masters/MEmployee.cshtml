@@ -54,7 +54,8 @@
             $("#AddEmployeeModalButton").on("click", function (ev) {
                 ev.preventDefault();
                 getModalContent({
-                    url: "MEmployee/AddMEmployeePartial"
+                    url: "MEmployee/AddMEmployeePartial",
+                    formClass
                 });
             });
 
@@ -70,6 +71,66 @@
                 });
             });
             // /penambahan employee baru
+
+            // melihat detail 'employee'
+            $(document).on("click", ".memployee-detail-button", function (ev) {
+                getModalContent({
+                    url: "MEmployee/MEmployeeDetailPartial",
+                    dataId: ev.target.id,
+                    formClass
+                });
+            });
+            // /melihat detail 'employee'
+
+            // melakukan edit
+            $(document).on("click", ".memployee-edit-button", function (ev) {
+                getModalContent({
+                    url: "MEmployee/EditPartial",
+                    dataId: ev.target.id,
+                    formClass
+                });
+            });
+
+            $(document).on("submit", "#EditEmployeeForm", function (ev) {
+                ev.preventDefault();
+                const formValue = $("#EditEmployeeForm").serialize();
+                submit({
+                    url: "MEmployee/Edit",
+                    contentType: defaultContentType,
+                    data: formValue,
+                    keterangan: "Employee has been successfully edited",
+                    tableBodyId
+                });
+            });
+            // /melakukan edit
+
+            // melakukan delete
+            $(document).on("click", ".memployee-delete-button", function (ev) {
+                getModalContent({
+                    url: "MEmployee/DeletePartial",
+                    dataId: ev.target.id,
+                    formClass
+                });
+            });
+
+            $(document).on("submit", "#DeleteMEmployeeForm", function (ev) {
+                ev.preventDefault();
+                let data = {
+                    DataId: $("#DeleteMEmployeeForm input[name='Item1.Id']").val(),
+                };
+                let headers = {
+                    RequestVerificationToken: $("#DeleteMEmployeeForm input[name='__RequestVerificationToken']").val(),
+                };
+                submit({
+                    url: "MEmployee/Delete",
+                    contentType: jsonContentType,
+                    headers,
+                    data: JSON.stringify(data),
+                    keterangan: "An employee has been successfully deleted",
+                    tableBodyId
+                });
+            });
+            // /melakukan delete
 
             // penutupan modal
             $(document).on("click", "#MEmployeeModalCloser", function () {

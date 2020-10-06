@@ -85,3 +85,15 @@ body {
 #SearchCompanyForm td {
     padding: 2px!important;
 }
+
+.memployee-detail-button:hover {
+    cursor: pointer;
+}
+
+.memployee-edit-button:hover {
+    cursor: pointer;
+}
+
+.memployee-delete-button:hover {
+    cursor: pointer;
+}

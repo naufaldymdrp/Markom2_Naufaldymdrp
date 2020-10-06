@@ -21,17 +21,17 @@
     else if (Model.Item2 == MEmployeePartial.Detail)
     {
         disabled = true;
-        modalTitle = "Employee Detail";
+        modalTitle = "Employee Detail - " + Model.Item1.Code;
     }
     else if (Model.Item2 == MEmployeePartial.Edit)
     {
-        modalTitle = "Edit Employee";
+        modalTitle = "Edit Employee - " + Model.Item1.Code;
         buttonId = "MEmployeeModalSubmitEdit";
         formId = "EditEmployeeForm";
     }
     else if (Model.Item2 == MEmployeePartial.Delete)
     {
-        modalTitle = "Delete Employee";
+        modalTitle = "Delete Employee - " + Model.Item1.Code;
         buttonId = "MEmployeeModalSubmitDelete";
         formId = "DeleteMEmployeeForm";
     }
@@ -71,19 +71,26 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label asp-for="Item1.MCompanyId" class="control-label"></label>
-                            <select asp-for="Item1.MCompanyId" asp-items="Model.Item3" class="form-control" disabled="@disabled"></select>
+                            @if (Model.Item2 == MEmployeePartial.Detail)
+                            {
+                                <input asp-for="Item1.MCompany_Navigation.Name" class="form-control" disabled />
+                            }
+                            else
+                            {
+                                <select asp-for="Item1.MCompanyId" asp-items="Model.Item3" class="form-control"></select>
+                            }
                         </div>
                         <div class="form-group">
                             <label asp-for="Item1.Email" class="control-label"></label>
                             <input asp-for="Item1.Email" class="form-control" disabled="@disabled" />
-                        </div>
+                        </div>                        
                     </div>
                 </div>
             }
         </div>
         <div class="modal-footer">
             <div class="form-group">
-                <button type="submit" class="btn @(!disabled ? "btn-primary" : "btn-danger")" 
+                <button type="submit" class="btn @(Model.Item2 != MEmployeePartial.Delete ? "btn-primary" : "btn-danger")" 
                         id="@buttonId" hidden="@disabled">Submit</button>
                 <button type="button" class="btn btn-warning" id="MEmployeeModalCloser">Cancel</button>
             </div>
