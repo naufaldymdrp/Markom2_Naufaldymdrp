@@ -25,7 +25,21 @@ namespace Markom2.Repository.ViewModels
         public string CreatedBy { get; set; }
 
         [Display(Name = "Created Date", Prompt = "Created Date")]
-        [DataType(DataType.Date)]
-        public DateTime? CreatedDate { get; set; }
+        [DataType(DataType.Text)]
+        public string CreatedDate { get; set; }
+
+        public void DefaultIfNullProperties()
+        {
+            if (Code == null)
+                Code = string.Empty;
+            if (Name == null)
+                Name = string.Empty;
+            if (CompanyName == null)
+                CompanyName = string.Empty;
+            if (CreatedBy == null)
+                CreatedBy = string.Empty;
+            if (CreatedDate == null)
+                CreatedDate = string.Empty;
+        }
     }
 }

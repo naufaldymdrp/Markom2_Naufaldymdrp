@@ -109,6 +109,7 @@
             $.get(url, searchItem, data => {
                 $(tableBodyId).empty();
                 $(tableBodyId).append(data);
+                alert("Search success");
             }).fail(function (errData) {
                 alert("Search failed");
                 console.log(errData.responseText);

@@ -216,11 +216,13 @@ namespace Markom2.Web.Pages.Masters
             }
         }
 
-        public async Task<IActionResult> OnGetSearch(VMEmployee employee)
+        public async Task<IActionResult> OnGetSearch(VMEmployee employeeView)
         {
             try
             {
-                
+                var employees = await _mEmployeeService.SearchAsync(employeeView);
+
+                return Partial("MEmployeePartials/_MEmployeeViewListPartial", employees);
             }
             catch (Exception ex)
             {

@@ -54,7 +54,7 @@ namespace Markom2.Repository.Models
         public IdentityUser CreatedBy_Navigation { get; set; }
 
         [Column("Created_Date", TypeName = "datetime")]
-        public DateTime? CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         [Column("Updated_By")]
         public string UpdatedBy { get; set; }

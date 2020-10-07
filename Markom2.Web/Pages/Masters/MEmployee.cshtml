@@ -132,6 +132,18 @@
             });
             // /melakukan delete
 
+            // melakukan pencarian
+            $("#SearchEmployeeForm").on("submit", (ev) => {
+                ev.preventDefault();
+                const formValue = $("#SearchEmployeeForm").serialize();
+                search({
+                    url: "MEmployee/Search",
+                    searchItem: formValue,
+                    tableBodyId
+                });
+            });
+            // /melakukan pencarian
+
             // penutupan modal
             $(document).on("click", "#MEmployeeModalCloser", function () {
                 closeModal();

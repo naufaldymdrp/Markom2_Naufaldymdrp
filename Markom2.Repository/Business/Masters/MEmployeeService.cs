@@ -1,6 +1,7 @@
 ﻿using Markom2.Repository.Models;
 using Markom2.Repository.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -35,8 +36,8 @@ namespace Markom2.Repository.Business.Masters
                     Code = item.Code,
                     Name = item.FirstName + " " + item.LastName,
                     CompanyName = item.MCompany_Navigation.Name,
-                    CreatedDate = item.CreatedDate,
-                    CreatedBy = item.CreatedBy_Navigation.UserName
+                    CreatedBy = item.CreatedBy_Navigation.UserName,
+                    CreatedDate = item.CreatedDate.ToString("dd/MM/yyyy")
                 })
                 .ToListAsync();
 
@@ -118,6 +119,38 @@ namespace Markom2.Repository.Business.Masters
             targetEntity.UpdatedDate = updatedDate;
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IList<VMEmployee>> SearchAsync(VMEmployee searchEntity)
+        {
+
+            searchEntity.DefaultIfNullProperties();
+            _logger.LogInformation("The search entity is {@searchEntity}", searchEntity);
+
+            var createdDate = searchEntity.CreatedDate == null ? "%%" : $"%{searchEntity.CreatedDate}%";
+
+            var result = await _dbContext.MEmployees                
+                .Include(item => item.CreatedBy_Navigation)
+                .Include(item => item.MCompany_Navigation)
+                .Where(item => EF.Functions.Like(item.FirstName + " " + item.LastName, $"%{searchEntity.Name}%")
+                    && EF.Functions.Like(item.Code, $"%{searchEntity.Code}%")
+                    && EF.Functions.Like(item.MCompany_Navigation.Name, $"%{searchEntity.CompanyName}%")
+                    && EF.Functions.Like(item.CreatedBy_Navigation.UserName, $"%{searchEntity.CreatedBy}%")
+                    //&& EF.Functions.Like(item.CreatedDate.ToString(), createdDate)
+                    && item.IsDelete == false
+                 )
+                .Select(item => new VMEmployee
+                {
+                    Id = item.Id,
+                    Code = item.Code,
+                    Name = $"{item.FirstName} {item.LastName}",
+                    CompanyName = $"{item.MCompany_Navigation.Name}",
+                    CreatedBy = $"{item.CreatedBy_Navigation.UserName}",
+                    CreatedDate = item.CreatedDate.ToString("dd/MM/yyyy")
+                })
+                .ToListAsync();
+
+            return result;
         }
     }
 }
