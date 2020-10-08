@@ -40,5 +40,7 @@ namespace Markom2.Repository.Models
         public DbSet<MCompany> MCompanies { get; set; }
 
         public DbSet<MEmployee> MEmployees { get; set; }
+
+        public DbSet<MRole> MRoles { get; set; }
     }
 }

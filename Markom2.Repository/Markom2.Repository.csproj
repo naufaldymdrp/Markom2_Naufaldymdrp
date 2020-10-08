@@ -33,6 +33,8 @@
     <Compile Remove="Migrations\20200921062118_ChangeColumn_MCompany.Designer.cs" />
     <Compile Remove="Migrations\20200923120635_ChangeCreatedDate_MCompany.cs" />
     <Compile Remove="Migrations\20200923120635_ChangeCreatedDate_MCompany.Designer.cs" />
+    <Compile Remove="Migrations\20201008030317_AddRoleTabelAndSchema.cs" />
+    <Compile Remove="Migrations\20201008030317_AddRoleTabelAndSchema.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
