@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Markom2.Repository.ViewModels
+@model IList<VMRole>
+
+@if (Model != null)
+{
+    foreach (var modelItem in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(_ => modelItem.Id)</td>
+            <td>@Html.DisplayFor(_ => modelItem.Code)</td>
+            <td>@Html.DisplayFor(_ => modelItem.Name)</td>
+            <td>@Html.DisplayFor(_ => modelItem.CreatedDate)</td>
+            <td>@Html.DisplayFor(_ => modelItem.CreatedBy)</td>
+            <td>
+                <span class="fas fa-search-plus mrole-detail-button" aria-hidden="true" id="@modelItem.Id"></span>
+                <span class="fas fa-pen mrole-edit-button" aria-hidden="true" id="@modelItem.Id"></span>
+                <span class="fas fa-trash mrole-delete-button" aria-hidden="true" id="@modelItem.Id"></span>
+            </td>
+        </tr>
+    }
+}

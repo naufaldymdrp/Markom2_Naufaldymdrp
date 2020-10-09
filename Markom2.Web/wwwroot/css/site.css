@@ -97,3 +97,16 @@ body {
 .memployee-delete-button:hover {
     cursor: pointer;
 }
+
+/*#AddMRoleModalButton {
+    cursor: pointer;
+}*/
+
+form#SearchRoleForm td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.mrole-detail-button:hover, .mrole-edit-button:hover, .mrole-delete-button:hover {
+    cursor: pointer;
+}

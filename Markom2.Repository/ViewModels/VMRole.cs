@@ -10,21 +10,22 @@ namespace Markom2.Repository.ViewModels
         public int Id { get; set; }
 
         [MaxLength(50)]
-        [DisplayName("Role Code")]
+        [Display(Name = "Role Code", Prompt = "Role Code")]
         public string Code { get; set; }
 
         [MaxLength(50)]
-        [DisplayName("Role Name")]
+        [Display(Name = "Role Name", Prompt = "Role Name")]
         public string Name { get; set; }
         
         [MaxLength(255)]        
         [DataType(DataType.MultilineText)]
+        [Display(Prompt = "Description")]
         public string Description { get; set; }
         
-        [DisplayName("Created By")]
+        [Display(Name = "Created By", Prompt = "Description")]
         public string CreatedBy { get; set; }        
 
-        [DisplayName("Created Date")]
-        public DateTime CreatedDate { get; set; }
+        [Display(Name = "Created Date", Prompt = "Description")]
+        public string CreatedDate { get; set; }
     }
 }
