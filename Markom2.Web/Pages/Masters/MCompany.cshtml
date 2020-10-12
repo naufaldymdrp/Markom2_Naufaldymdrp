@@ -25,7 +25,7 @@
                         <td></td>
                         <td></td>
                         <td>
-                            <button href="#" id="AddCompanyModalButton" class="btn btn-primary">
+                            <button type="button" id="AddCompanyModalButton" class="btn btn-primary">
                                 <span class="fas fa-plus" aria-hidden="true"></span>
                             </button>
                         </td>
@@ -77,13 +77,14 @@
     <script type="text/javascript">       
 
         let tableBodyId = "#MCompanyTableBody";
-        let formClass = "form.MCompanyFormPartial";
+        let formClass = ".MCompanyFormPartial";
 
         $(document).ready(() => {
             // Penambahan MCompany baru
             $("#AddCompanyModalButton").on("click", () => {
                 getModalContent({
-                    url: "MCompany/AddMCompanyPartial"
+                    url: "MCompany/AddMCompanyPartial",
+                    formClass
                 });
             });
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Markom2.Repository.Business.Masters;
 using Markom2.Repository.Models;
 using Markom2.Repository.ViewModels;
+using Markom2.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,12 @@ namespace Markom2.Web.Pages.Masters
     [Authorize]
     public class MRoleModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;        
         private readonly MRoleService _mRoleService;
         private readonly ILogger _logger;
 
         public MRoleModel(
-            UserManager<IdentityUser> userManager,
+            UserManager<IdentityUser> userManager,            
             MRoleService mRoleService,
             ILogger<MRoleModel> logger)
         {
@@ -45,6 +46,47 @@ namespace Markom2.Web.Pages.Masters
             catch (Exception ex)
             {
                 _logger.LogError("Error occured, {@ex}", ex);
+            }
+        }
+
+        public async Task<IActionResult> OnGetAddItemPartialAsync()
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var role = new MRole { CreatedBy = user.Id };
+
+                return Partial("MRolePartials/_Form", (role, FormPartialMode.Add));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured, {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> OnPostAddAsync(MRole item1)
+        {
+            try
+            {
+                if (!TryValidateModel(item1))
+                {
+                    return BadRequest(ModelState);
+                }
+
+                await _mRoleService.AddAsync(item1);
+
+                var roles = await _mRoleService.GetAllAsync();
+
+                return Partial("MRolePartials/_ViewList", roles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured, {@ex}", ex);
+
+                return BadRequest(ex.Message);
             }
         }
     }

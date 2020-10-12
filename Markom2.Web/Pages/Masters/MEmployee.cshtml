@@ -47,19 +47,19 @@
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
         let tableBodyId = "#MEmployeeTableBody";
-        let formClass = "form.MEmployeeFormPartial";
+        let formClass = ".MEmployeeFormPartial";
 
         $(document).ready(function () {
             // penambahan Employee baru
-            $("#AddEmployeeModalButton").on("click", function (ev) {
-                ev.preventDefault();
+            $("#AddEmployeeModalButton").on("click", function (ev) {                
+                ev.preventDefault();                
                 getModalContent({
                     url: "MEmployee/AddMEmployeePartial",
                     formClass
                 });
             });
 
-            $(document).on("click", "#MEmployeeModalSubmit", function (ev) {
+            $(document).on("submit", "#AddEmployeeForm", function (ev) {
                 ev.preventDefault();
                 let formValue = $("#AddEmployeeForm").serialize();
                 submit({

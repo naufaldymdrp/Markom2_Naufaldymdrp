@@ -102,9 +102,8 @@ body {
     cursor: pointer;
 }*/
 
-form#SearchRoleForm td {
-    padding-top: 5px;
-    padding-bottom: 5px;
+form table td {
+    padding: 5px 2px !important;
 }
 
 .mrole-detail-button:hover, .mrole-edit-button:hover, .mrole-delete-button:hover {

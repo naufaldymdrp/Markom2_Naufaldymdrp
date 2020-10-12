@@ -9,8 +9,7 @@ namespace Markom2.Repository.Models
     public class MRole
     {
         public int Id { get; set; }
-
-        [Required]
+       
         [MaxLength(50)]
         [Column(TypeName = "varchar(50)")]
         public string Code { get; set; }
@@ -36,7 +35,7 @@ namespace Markom2.Repository.Models
         [ForeignKey("CreatedBy")]
         public IdentityUser CreatedBy_Navigation { get; set; }
 
-        [Column("Created_Date")]
+        [Column("Created_Date", TypeName = "datetime")]
         public DateTime CreatedDate { get; set; }
 
         [Column("Updated_By")]
@@ -45,7 +44,7 @@ namespace Markom2.Repository.Models
         [ForeignKey("UpdatedBy")]
         public IdentityUser UpdatedBy_Navigation { get; set; }
 
-        [Column("Updated_Date")]
+        [Column("Updated_Date", TypeName = "datetime")]
         public DateTime? UpdatedDate { get; set; }
     }
 }

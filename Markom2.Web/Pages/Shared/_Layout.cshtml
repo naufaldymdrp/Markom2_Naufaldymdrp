@@ -76,7 +76,8 @@
 
         function getModalContent({ url, dataId, formClass }) {
             $.get(url, { dataId }, data => {
-                $("#ModalContent").append(data);
+                $("#ModalContent").append(data);                                
+            }).done(() => {                                
                 $(formClass).removeData("validator");
                 $(formClass).removeData("unobtrusiveValidation");
                 $.validator.unobtrusive.parse(formClass);
@@ -87,7 +88,7 @@
             });
         }
 
-        function submit({ url, contentType, headers, data, keterangan, tableBodyId }) {
+        function submit({ url, contentType, headers, data, keterangan, tableBodyId }) {            
             $.ajax({
                 type: "POST",
                 url: url,

@@ -8,7 +8,7 @@
 @model VMEmployee
 
 <!-- Transparent table for filter form -->
-<form class="row d-flex justify-content-center" id="SearchEmployeeForm">
+<form class="row d-flex justify-content-end" id="SearchEmployeeForm">
     <table class="table table-borderless">
         <tbody>     
             <tr>
@@ -17,29 +17,29 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td class="px-sm-1">
+                <td>
                     <button type="button" href="#" id="AddEmployeeModalButton" class="btn btn-primary">
                         <span class="fas fa-plus" aria-hidden="true"></span>
                     </button>
                 </td>
             </tr>
             <tr >
-                <td class="px-sm-1">
+                <td>
                     <input asp-for="Code" class="form-control" />
                 </td>
-                <td class="px-sm-1">
+                <td>
                     <input asp-for="Name" class="form-control" />
                 </td>
-                <td class="px-sm-1">
+                <td>
                     <input asp-for="CompanyName" class="form-control" />
                 </td>
-                <td class="px-sm-1">
+                <td>
                     <input asp-for="CreatedDate" class="form-control" />
                 </td>
-                <td class="px-sm-1">
+                <td>
                     <input asp-for="CreatedBy" class="form-control" />
                 </td>
-                <td class="px-sm-1">
+                <td>
                     <button type="submit" href="#" id="SearchEmployeeButton" class="btn btn-warning">
                         <span class="fas fa-search-plus" aria-hidden="false"></span>
                     </button>

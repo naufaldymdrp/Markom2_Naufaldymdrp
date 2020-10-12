@@ -35,6 +35,16 @@ namespace Markom2.Repository.Models
                     .IsRequired()
                     .HasDefaultValueSql("GETDATE()");
             });
+
+            builder.Entity<MRole>(buildAction =>
+            {
+                buildAction.Property(item => item.Code)
+                    .IsRequired();
+
+                buildAction.Property(item => item.CreatedDate)
+                    .IsRequired()
+                    .HasDefaultValueSql("GETDATE()");
+            })
         }
 
         public DbSet<MCompany> MCompanies { get; set; }

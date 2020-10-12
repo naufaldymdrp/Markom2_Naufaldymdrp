@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model Markom2.Web.Pages.Masters.MRoleModel
 @{
 }
@@ -43,3 +43,41 @@
         </div>
     </div>
 </div>
+
+@section Scripts 
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        const tableBodyId = "#MRoleTableBody";
+        const formClass = ".MRoleFormPartial";
+
+        $(document).ready(function () {
+            // melakukan penambahan item baru
+            $("#AddMRoleModalButton").on("click", function () {
+                getModalContent({
+                    url: "MRole/AddItemPartial",
+                    formClass
+                });
+            });
+
+            $(document).on("submit", "#AddRoleForm", (ev) => {
+                ev.preventDefault();
+                const formValue = $("#AddRoleForm").serialize();
+                debugger;
+                submit({
+                    url: "MRole/Add",
+                    contentType: defaultContentType,
+                    data: formValue,
+                    keterangan: "Successfully added a new role",
+                    tableBodyId
+                });
+            });
+            // /melakukan penambahan item baru
+
+            // melakukan penutupan modal
+            $(document).on("click", "#MRoleModalCloser", () => {
+                closeModal();
+            });
+        });
+    </script>
+}
