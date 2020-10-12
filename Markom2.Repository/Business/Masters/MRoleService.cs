@@ -63,7 +63,19 @@ namespace Markom2.Repository.Business.Masters
                     if (!identityRoleResult.Succeeded)
                         throw new Exception("Failed to add role to AspNetRoles");
 
+                    entity.Code = "xxxx"; // hanya sementara
                     _dbContext.MRoles.Add(entity);
+
+                    await _dbContext.SaveChangesAsync();
+
+                    var lastId = entity.Id.ToString();
+                    var leadingZeros = "0000";
+                    var cutLeadingZeros = leadingZeros.AsMemory().Slice(lastId.Length);
+                    var result = "RO" + cutLeadingZeros.ToString() + lastId;
+
+                    entity.Code = result;
+
+                    _dbContext.Attach(entity).State = EntityState.Modified;
 
                     await _dbContext.SaveChangesAsync();
 

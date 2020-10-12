@@ -41,6 +41,8 @@
             <h5 class="modal-title">@modalTitle</h5>
         </div>
         <div class="modal-body">
+            <input type="hidden" asp-for="Item1.Id" />
+            <input type="hidden" asp-for="Item1.CreatedBy" />
             <div class="row d-flex justify-content-center">
                 <div class="col-sm-8">
                     <div class="text-danger" asp-validation-summary="ModelOnly"></div>

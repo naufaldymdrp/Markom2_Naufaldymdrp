@@ -57,31 +57,33 @@ namespace Markom2.Repository.Business.Masters
         {
             _logger.LogInformation("Penambahan data MCompany dimulai");
 
-            using var transaction = await _context.Database.BeginTransactionAsync();
-            try
+            using (var transaction = await _context.Database.BeginTransactionAsync())
             {
-                data.Code = "xxxx"; // hanya sementara
-                _context.Add(data);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    data.Code = "xxxx"; // hanya sementara
+                    _context.Add(data);
+                    await _context.SaveChangesAsync();
 
-                var lastId = data.Id.ToString();
-                var leadingZeros = "0000";
-                var cutLeadingZeros = leadingZeros.AsMemory().Slice(lastId.Length);
-                data.Code = "CP" + cutLeadingZeros.ToString() + lastId;
+                    var lastId = data.Id.ToString();
+                    var leadingZeros = "0000";
+                    var cutLeadingZeros = leadingZeros.AsMemory().Slice(lastId.Length);
+                    data.Code = "CP" + cutLeadingZeros.ToString() + lastId;
 
-                _context.Attach(data).State = EntityState.Modified;
+                    _context.Attach(data).State = EntityState.Modified;
 
-                await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
 
-                transaction.Commit();
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
 
-                _logger.LogError("MCompanyService error : {@ex}", ex);
-                throw new Exception("MCompanyService error", ex);
-            }
+                    _logger.LogError("MCompanyService error : {@ex}", ex);
+                    throw new Exception("MCompanyService error", ex);
+                }
+            }            
         }
 
         public async Task<IList<MCompany>> GetAsync(MCompany targetData)

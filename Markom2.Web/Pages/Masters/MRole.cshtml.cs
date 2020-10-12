@@ -71,6 +71,8 @@ namespace Markom2.Web.Pages.Masters
         {
             try
             {
+                item1.CreatedDate = DateTime.Now;
+                ModelState.Clear();
                 if (!TryValidateModel(item1))
                 {
                     return BadRequest(ModelState);
