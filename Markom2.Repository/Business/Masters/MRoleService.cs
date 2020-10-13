@@ -46,6 +46,7 @@ namespace Markom2.Repository.Business.Masters
 
             var result = await _dbContext.MRoles
                 .Include(item => item.CreatedBy_Navigation)
+                .Where(item => item.IsDelete == false)
                 .Select(item => new VMRole
                 {
                     Id = item.Id,
@@ -114,6 +115,22 @@ namespace Markom2.Repository.Business.Masters
 
             targetEntity.UpdatedBy = entity.UpdatedBy;
             targetEntity.UpdatedDate = entity.UpdatedDate;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int dataId, string updatedBy, DateTime updatedDate)
+        {
+            _logger.LogInformation("Deleting role (IsDelete=1) based on Id : {@dataId}", dataId);
+
+            var targetEntity = await _dbContext.MRoles
+                .Where(item => item.Id == dataId)
+                .FirstAsync();
+
+            targetEntity.IsDelete = true;
+
+            targetEntity.UpdatedBy = updatedBy;
+            targetEntity.UpdatedDate = updatedDate;
 
             await _dbContext.SaveChangesAsync();
         }

@@ -78,7 +78,9 @@ namespace Markom2.Web.Pages.Masters
 
                 return BadRequest(ex.Message);
             }
-        }        
+        }
+
+        #region Add
 
         public async Task<IActionResult> OnGetAddItemPartialAsync()
         {            
@@ -110,10 +112,18 @@ namespace Markom2.Web.Pages.Masters
             }
         }
 
+        #endregion
+
+        #region Detail
+
         public async Task<IActionResult> OnGetDetailAsync(int dataId)
         {                        
             return await GeneralGet(dataId, FormPartialMode.Detail);
         }
+
+        #endregion 
+
+        #region Edit
 
         public async Task<IActionResult> OnGetEditAsync(int dataId)
         {
@@ -144,5 +154,41 @@ namespace Markom2.Web.Pages.Masters
                 return BadRequest(ex.Message);
             }
         }
+
+        #endregion
+
+        #region Delete
+
+        public async Task<IActionResult> OnGetDeleteAsync(int dataId)
+        {
+            return await GeneralGet(dataId, FormPartialMode.Delete);
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync([FromBody] JsonDataId data)
+        {
+            try
+            {
+                if (data == null)
+                    throw new ArgumentException("Parameter should not be null !");
+
+                var dataId = Convert.ToInt32(data.DataId);
+                var updatedBy = _userManager.GetUserId(User);
+                var updatedDate = DateTime.Now;
+
+                await _mRoleService.DeleteAsync(dataId, updatedBy, updatedDate);
+
+                var roles = await _mRoleService.GetAllAsync();
+
+                return Partial("MRolePartials/_ViewList", roles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured, {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
     }
 }

@@ -63,7 +63,6 @@
             $(document).on("submit", "#AddRoleForm", (ev) => {
                 ev.preventDefault();
                 const formValue = $("#AddRoleForm").serialize();
-                debugger;
                 submit({
                     url: "MRole/Add",
                     contentType: defaultContentType,
@@ -105,6 +104,34 @@
                 });
             });
             // /melakukan edit item
+
+            // melakukan delete
+            $(document).on("click", ".mrole-delete-button", ev => {
+                getModalContent({
+                    url: "MRole/Delete",
+                    dataId: ev.target.id,
+                    formClass
+                });
+            });
+
+            $(document).on("submit", "#DeleteRoleForm", (ev) => {
+                ev.preventDefault();
+                const data = {
+                    DataId: $("#DeleteRoleForm input[name='Item1.Id']").val()
+                };
+                const headers = {
+                    RequestVerificationToken: $("#DeleteRoleForm input[name='__RequestVerificationToken'").val()
+                };
+                submit({
+                    url: "MRole/Delete",
+                    contentType: jsonContentType,
+                    headers,
+                    data: JSON.stringify(data),
+                    keterangan: "A role has been successfully deleted",
+                    tableBodyId
+                });
+            });
+            // /melakukan delete
 
             // melakukan penutupan modal
             $(document).on("click", "#MRoleModalCloser", () => {
