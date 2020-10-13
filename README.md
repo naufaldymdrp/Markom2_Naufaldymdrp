@@ -16,3 +16,4 @@ Tidak perlu Visual Studio 2019 untuk menjalankan program ini.
    jangan lupa untuk ubah 'connection string' di file appsettings.json
 5. lakukan 'dotnet run' untuk menjalankan program
 6. Lakukan pendaftaran terlebih dahulu
+7. Apabila melakukan git pull, maka lakukan langkah no. 4 karena mungkin ada perubahan skema database
