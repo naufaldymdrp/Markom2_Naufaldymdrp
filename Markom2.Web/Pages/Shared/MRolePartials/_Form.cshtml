@@ -25,13 +25,13 @@
     }
     else if (Model.Item2 == FormPartialMode.Edit)
     {
-        modalTitle = "Edit Role";
+        modalTitle = "Edit Role " + Model.Item1.Name;
         buttonId = "MRoleModalSubmitEdit";
         formId = "EditRoleForm";
     }
     else if (Model.Item2 == FormPartialMode.Delete)
     {
-        modalTitle = "Delete Role";
+        modalTitle = "Delete Role " + Model.Item1.Name;
         buttonId = "MRoleModalSubmitDelete";
         formId = "DeleteRoleForm";
     }
@@ -73,7 +73,7 @@
                             <label asp-for="Item1.Description" class="control-label"></label>
                         </div>
                         <div class="col-sm-8">
-                            @Html.TextAreaFor(item => item.Item1.Description, new { @class = "form-control", @disabled = disabled })
+                            <textarea asp-for="Item1.Description" class="form-control" disabled="@disabled"></textarea>
                         </div>
                     </div>
                 </div>                

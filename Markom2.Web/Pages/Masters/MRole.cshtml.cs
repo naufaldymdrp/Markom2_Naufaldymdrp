@@ -49,15 +49,28 @@ namespace Markom2.Web.Pages.Masters
             }
         }
 
-        public async Task<IActionResult> OnGetAddItemPartialAsync()
+        public async Task<IActionResult> GeneralGet(int dataId, FormPartialMode formMode)
         {
             try
             {
-                var user = await _userManager.GetUserAsync(User);
+                if (dataId == 0 && formMode == FormPartialMode.Add)
+                {
+                    var userId = _userManager.GetUserId(User);
 
-                var role = new MRole { CreatedBy = user.Id };
+                    var role = new MRole { CreatedBy = userId };
 
-                return Partial("MRolePartials/_Form", (role, FormPartialMode.Add));
+                    return Partial("MRolePartials/_Form", (role, formMode));
+                }
+                else if (dataId != 0)
+                {
+                    var role = await _mRoleService.GetAsync(dataId);
+
+                    return Partial("MRolePartials/_Form", (role, formMode));
+                }
+                else
+                {
+                    throw new ArgumentException("dataId ");
+                }
             }
             catch (Exception ex)
             {
@@ -65,6 +78,11 @@ namespace Markom2.Web.Pages.Masters
 
                 return BadRequest(ex.Message);
             }
+        }        
+
+        public async Task<IActionResult> OnGetAddItemPartialAsync()
+        {            
+            return await GeneralGet(0, FormPartialMode.Add);
         }
 
         public async Task<IActionResult> OnPostAddAsync(MRole item1)
@@ -93,12 +111,31 @@ namespace Markom2.Web.Pages.Masters
         }
 
         public async Task<IActionResult> OnGetDetailAsync(int dataId)
+        {                        
+            return await GeneralGet(dataId, FormPartialMode.Detail);
+        }
+
+        public async Task<IActionResult> OnGetEditAsync(int dataId)
+        {
+            return await GeneralGet(dataId, FormPartialMode.Edit);
+        }
+
+        public async Task<IActionResult> OnPostEditAsync(MRole item1)
         {
             try
             {
-                var role = await _mRoleService.GetAsync(dataId);
+                if (!TryValidateModel(item1))
+                    return BadRequest(item1);
 
-                return Partial("MRolePartials/_Form", (role, FormPartialMode.Detail));
+                var userId = _userManager.GetUserId(User);
+                item1.UpdatedBy = userId;
+                item1.UpdatedDate = DateTime.Now;
+
+                await _mRoleService.EditAsync(item1);
+
+                var roles = await _mRoleService.GetAllAsync();
+
+                return Partial("MRolePartials/_ViewList", roles);
             }
             catch (Exception ex)
             {

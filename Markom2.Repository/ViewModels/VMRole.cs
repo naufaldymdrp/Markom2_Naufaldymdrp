@@ -22,10 +22,10 @@ namespace Markom2.Repository.ViewModels
         [Display(Prompt = "Description")]
         public string Description { get; set; }
         
-        [Display(Name = "Created By", Prompt = "Description")]
+        [Display(Name = "Created By", Prompt = "Created By")]
         public string CreatedBy { get; set; }        
 
-        [Display(Name = "Created Date", Prompt = "Description")]
+        [Display(Name = "Created Date", Prompt = "Created Date")]
         public string CreatedDate { get; set; }
     }
 }

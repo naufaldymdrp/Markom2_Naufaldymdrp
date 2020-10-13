@@ -84,6 +84,28 @@
             });
             // /melakukan detail item
 
+            // melakukan edit item
+            $(document).on("click", ".mrole-edit-button", ev => {
+                getModalContent({
+                    url: "MRole/Edit",
+                    dataId: ev.target.id,
+                    formClass
+                });
+            });
+
+            $(document).on("submit", "#EditRoleForm", ev => {
+                ev.preventDefault();
+                const formValue = $("#EditRoleForm").serialize();
+                submit({
+                    url: "MRole/Edit",
+                    contentType: defaultContentType,
+                    data: formValue,
+                    keterangan: "A role has been successfully edited",
+                    tableBodyId
+                });
+            });
+            // /melakukan edit item
+
             // melakukan penutupan modal
             $(document).on("click", "#MRoleModalCloser", () => {
                 closeModal();

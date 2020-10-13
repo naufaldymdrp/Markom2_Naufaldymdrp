@@ -101,6 +101,21 @@ namespace Markom2.Repository.Business.Masters
                     throw new Exception("Error adding role", ex);
                 }
             }
-        }        
+        }
+
+        public async Task EditAsync(MRole entity)
+        {
+            var targetEntity = await _dbContext.MRoles
+                .Where(item => item.Id == entity.Id)
+                .FirstAsync();
+
+            targetEntity.Name = entity.Name;
+            targetEntity.Description = entity.Description;
+
+            targetEntity.UpdatedBy = entity.UpdatedBy;
+            targetEntity.UpdatedDate = entity.UpdatedDate;
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
