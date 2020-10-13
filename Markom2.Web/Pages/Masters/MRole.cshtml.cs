@@ -91,5 +91,21 @@ namespace Markom2.Web.Pages.Masters
                 return BadRequest(ex.Message);
             }
         }
+
+        public async Task<IActionResult> OnGetDetailAsync(int dataId)
+        {
+            try
+            {
+                var role = await _mRoleService.GetAsync(dataId);
+
+                return Partial("MRolePartials/_Form", (role, FormPartialMode.Detail));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured, {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

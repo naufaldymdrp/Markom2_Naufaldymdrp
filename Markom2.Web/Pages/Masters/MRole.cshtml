@@ -34,7 +34,7 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="MRoleTableBody">
                         <partial name="MRolePartials/_ViewList" for="RoleViewList" />
                     </tbody>
                 </table>
@@ -73,6 +73,16 @@
                 });
             });
             // /melakukan penambahan item baru
+
+            // melakukan detail item
+            $(document).on("click", ".mrole-detail-button", (ev) => {
+                getModalContent({
+                    url: "MRole/Detail",
+                    dataId: ev.target.id,
+                    formClass
+                });
+            });
+            // /melakukan detail item
 
             // melakukan penutupan modal
             $(document).on("click", "#MRoleModalCloser", () => {

@@ -27,6 +27,19 @@ namespace Markom2.Repository.Business.Masters
             _logger = logger;
         }
 
+        public async Task<MRole> GetAsync(int dataId)
+        {
+            _logger.LogInformation("Collecting single role data ...");
+
+            var result = await _dbContext.MRoles
+                .Where(item => item.Id == dataId)
+                .FirstOrDefaultAsync();
+
+            _logger.LogInformation("The MRole entity is {@result}", result);
+
+            return result;
+        }
+
         public async Task<IList<VMRole>> GetAllAsync()
         {
             _logger.LogInformation("Collecting Role data");
@@ -88,6 +101,6 @@ namespace Markom2.Repository.Business.Masters
                     throw new Exception("Error adding role", ex);
                 }
             }
-        }
+        }        
     }
 }
