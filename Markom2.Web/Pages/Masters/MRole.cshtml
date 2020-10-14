@@ -133,6 +133,18 @@
             });
             // /melakukan delete
 
+            // melakukan pencarian
+            $(document).on("submit", "#SearchRoleForm", (ev) => {
+                ev.preventDefault();
+                const formValue = $("#SearchRoleForm").serialize();
+                search({
+                    url: "MRole/Search",
+                    searchItem: formValue,
+                    tableBodyId
+                });
+            });
+            // /melakukan pencarian
+
             // melakukan penutupan modal
             $(document).on("click", "#MRoleModalCloser", () => {
                 closeModal();

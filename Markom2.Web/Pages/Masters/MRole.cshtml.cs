@@ -190,5 +190,25 @@ namespace Markom2.Web.Pages.Masters
         }
 
         #endregion
+
+        #region Search
+
+        public async Task<IActionResult> OnGetSearchAsync(VMRole roleView)
+        {
+            try
+            {
+                var roles = await _mRoleService.SearchAsync(roleView);
+
+                return Partial("MRolePartials/_ViewList", roles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured, {@ex}", ex);
+
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
     }
 }

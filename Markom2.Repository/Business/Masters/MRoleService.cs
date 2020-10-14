@@ -1,10 +1,12 @@
-﻿using Markom2.Repository.Models;
+﻿using Dapper;
+using Markom2.Repository.Models;
 using Markom2.Repository.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -133,6 +135,32 @@ namespace Markom2.Repository.Business.Masters
             targetEntity.UpdatedDate = updatedDate;
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IList<VMRole>> SearchAsync(VMRole entity)
+        {
+            _logger.LogInformation("Searching for role using 'Dapper', {@entity}", entity);
+
+            using (var connection = _dbContext.Database.GetDbConnection())
+            {
+                var paramObj = new
+                {
+                    Code = entity.Code == null ? "" : entity.Code,
+                    Name = entity.Name == null ? "" : entity.Name,
+                    CreatedBy = entity.CreatedBy == null ? "" : entity.CreatedBy,
+                    CreatedDate = entity.CreatedDate == null ? "" : entity.CreatedDate
+                };
+                var result = await connection.QueryAsync<VMRole>("SearchRole", 
+                    param: paramObj, 
+                    commandType: CommandType.StoredProcedure);
+
+                if (result == null || result.Count() == 0)
+                    throw new Exception("Data not found");
+
+                var resultList = result.ToList();
+
+                return resultList;
+            }
         }
     }
 }
