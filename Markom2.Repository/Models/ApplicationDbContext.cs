@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,10 @@ using System.Text;
 
 namespace Markom2.Repository.Models
 {
+    //public class AppUser : IdentityUser
+    //{
+    //    public 
+    //}
     public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -45,6 +50,23 @@ namespace Markom2.Repository.Models
                     .IsRequired()
                     .HasDefaultValueSql("GETDATE()");
             });
+
+            builder.Entity<MUser>(buildAction =>
+            {
+                // kolom database harus unik (tidak boleh sama)
+                buildAction.HasIndex(item => item.Username)
+                    .IsUnique();
+
+                buildAction.HasOne<MRole>(item => item.MRole_Navigation)
+                    .WithMany(item => item.MUsers)
+                    .HasForeignKey(item => item.MRoleId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
+                buildAction.HasOne<MEmployee>(item => item.MEmployee_Navigation)
+                    .WithOne(item => item.Muser)
+                    .HasForeignKey<MUser>(item => item.MEmployeeId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
         }
 
         public DbSet<MCompany> MCompanies { get; set; }
@@ -52,5 +74,7 @@ namespace Markom2.Repository.Models
         public DbSet<MEmployee> MEmployees { get; set; }
 
         public DbSet<MRole> MRoles { get; set; }
+
+        public DbSet<MUser> MUsers { get; set; }
     }
 }

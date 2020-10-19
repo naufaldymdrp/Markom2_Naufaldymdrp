@@ -1,32 +1,38 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace Markom2.Repository.Models
 {
-    [Table("M_Role")]
-    public class MRole
+    [Table("M_User")]
+    public class MUser
     {
         [Key]
         public int Id { get; set; }
-       
-        [MaxLength(50)]
-        [Column(TypeName = "varchar(50)")]
-        public string Code { get; set; }
+        
+        [Required]
+        [Column(TypeName = "varchar(50)")]        
+        public string Username { get; set; }
 
         [Required]
-        [MaxLength(50)]
         [Column(TypeName = "varchar(50)")]
-        public string Name { get; set; }
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
 
-        [Required]
-        [MaxLength(255)]
-        [Column(TypeName = "varchar(255)")]
-        [DataType(DataType.MultilineText)]
-        public string Description { get; set; }
+        [Column("M_Role_Id")]
+        public int MRoleId { get; set; }
+
+        [ForeignKey("MRoleId")]
+        public MRole MRole_Navigation { get; set; }
+
+        [Column("M_Employee_Id")]
+        public int MEmployeeId { get; set; }
+
+        [ForeignKey("MEmployeeId")]
+        public MEmployee MEmployee_Navigation { get; set; }
 
         [Column("Is_Delete")]
         public bool IsDelete { get; set; }
@@ -38,7 +44,7 @@ namespace Markom2.Repository.Models
         [ForeignKey("CreatedBy")]
         public IdentityUser CreatedBy_Navigation { get; set; }
 
-        [Column("Created_Date", TypeName = "datetime")]
+        [Column("Created_Date")]
         public DateTime CreatedDate { get; set; }
 
         [Column("Updated_By")]
@@ -47,9 +53,7 @@ namespace Markom2.Repository.Models
         [ForeignKey("UpdatedBy")]
         public IdentityUser UpdatedBy_Navigation { get; set; }
 
-        [Column("Updated_Date", TypeName = "datetime")]
+        [Column("Updated_Date")]
         public DateTime? UpdatedDate { get; set; }
-
-        public ICollection<MUser> MUsers { get; set; }
     }
 }

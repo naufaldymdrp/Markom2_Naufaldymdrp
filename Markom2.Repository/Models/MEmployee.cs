@@ -64,5 +64,7 @@ namespace Markom2.Repository.Models
 
         [Column("Updated_Date", TypeName = "datetime")]
         public DateTime? UpdatedDate { get; set; }
+
+        public MUser Muser { get; set; }
     }
 }

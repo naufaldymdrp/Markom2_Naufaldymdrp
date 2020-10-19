@@ -35,6 +35,20 @@
     <Compile Remove="Migrations\20200923120635_ChangeCreatedDate_MCompany.Designer.cs" />
     <Compile Remove="Migrations\20201008030317_AddRoleTabelAndSchema.cs" />
     <Compile Remove="Migrations\20201008030317_AddRoleTabelAndSchema.Designer.cs" />
+    <Compile Remove="Migrations\20201019074103_AddMUserSchema.cs" />
+    <Compile Remove="Migrations\20201019074103_AddMUserSchema.Designer.cs" />
+    <Compile Remove="Migrations\20201019075253_AddMUserSchema.cs" />
+    <Compile Remove="Migrations\20201019075253_AddMUserSchema.Designer.cs" />
+    <Compile Remove="Migrations\20201019090938_AddMUserSchema.cs" />
+    <Compile Remove="Migrations\20201019090938_AddMUserSchema.Designer.cs" />
+    <Compile Remove="Migrations\20201019111934_AddMUserSchema.cs" />
+    <Compile Remove="Migrations\20201019111934_AddMUserSchema.Designer.cs" />
+    <Compile Remove="Migrations\20201019114458_AddMUserSchema.cs" />
+    <Compile Remove="Migrations\20201019114458_AddMUserSchema.Designer.cs" />
+    <Compile Remove="Migrations\20201019115137_AddMUserSchema.cs" />
+    <Compile Remove="Migrations\20201019115137_AddMUserSchema.Designer.cs" />
+    <Compile Remove="Migrations\20201019130429_AddMUserSchema.cs" />
+    <Compile Remove="Migrations\20201019130429_AddMUserSchema.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
