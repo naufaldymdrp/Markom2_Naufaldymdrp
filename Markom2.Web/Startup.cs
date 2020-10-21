@@ -36,6 +36,11 @@ namespace Markom2.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddMasterServices();
             services.AddRazorPages();
+
+            services.AddAuthorization(options =>
+            {
+                //options.AddPolicy("MenuAccess", policy => policy.RequireClaim(""));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +64,7 @@ namespace Markom2.Web
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

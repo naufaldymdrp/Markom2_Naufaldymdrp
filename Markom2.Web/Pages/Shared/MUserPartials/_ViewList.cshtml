@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Markom2.Repository.ViewModels
+@model IList<VMUser>
+
+@if (Model != null)
+{
+    foreach (var modelItem in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(_ => modelItem.No)</td>
+            <td>@Html.DisplayFor(_ => modelItem.Employee)</td>
+            <td>@Html.DisplayFor(_ => modelItem.Role)</td>
+            <td>@Html.DisplayFor(_ => modelItem.Company)</td>
+            <td>@Html.DisplayFor(_ => modelItem.Username)</td>
+            <td>@Html.DisplayFor(_ => modelItem.CreatedDate)</td>
+            <td>@Html.DisplayFor(_ => modelItem.CreatedBy)</td>
+            <td>
+                <span class="fas fa-search-plus muser-detail-button" aria-hidden="true" id="@modelItem.No"></span>
+                <span class="fas fa-pen muser-edit-button" aria-hidden="true" id="@modelItem.No"></span>
+                <span class="fas fa-trash muser-delete-button" aria-hidden="true" id="@modelItem.No"></span>
+            </td>
+        </tr>
+    }
+}

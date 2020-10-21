@@ -1,0 +1,54 @@
+﻿@page "{handler?}"
+@model Markom2.Web.Pages.Masters.MUserModel
+@{
+}
+
+<div class="row">
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-header">
+                <h4>User Master Data</h4>
+            </div>
+            <div class="card-body">
+                <!-- Breadcrumb Navigation -->
+                <nav class="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active" aria-current="page">User</li>
+                    </ol>
+                </nav>
+                <!-- /Breadcrumb Navigation -->
+                <!-- Search Functionality -->
+                <!-- /Search Functionality -->
+                <!-- Table -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(item => item.UserViewList[0].No)</th>
+                            <th>@Html.DisplayNameFor(item => item.UserViewList[0].Employee)</th>
+                            <th>@Html.DisplayNameFor(item => item.UserViewList[0].Role)</th>
+                            <th>@Html.DisplayNameFor(item => item.UserViewList[0].Company)</th>
+                            <th>@Html.DisplayNameFor(item => item.UserViewList[0].Username)</th>
+                            <th>@Html.DisplayNameFor(item => item.UserViewList[0].CreatedDate)</th>
+                            <th>@Html.DisplayNameFor(item => item.UserViewList[0].CreatedBy)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="MUserTableBody">
+                        <partial name="MUserPartials/_ViewList" for="UserViewList" />
+                    </tbody>
+                </table>
+                <!-- /Table -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        const tableBodyId = "MUserTableBody";
+        const formClass = "";
+    </script>
+}

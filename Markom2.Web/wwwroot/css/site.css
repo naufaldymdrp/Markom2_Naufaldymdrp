@@ -109,3 +109,7 @@ form table td {
 .mrole-detail-button:hover, .mrole-edit-button:hover, .mrole-delete-button:hover {
     cursor: pointer;
 }
+
+.muser-detail-button:hover, .muser-edit-button:hover, .muser-delete-button:hover {
+    cursor: pointer;
+}

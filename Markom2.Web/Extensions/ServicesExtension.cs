@@ -14,6 +14,7 @@ namespace Markom2.Web
             services.AddScoped<MCompanyService>();
             services.AddScoped<MEmployeeService>();
             services.AddScoped<MRoleService>();
+            services.AddScoped<MUserService>();
 
             return services;
         }
