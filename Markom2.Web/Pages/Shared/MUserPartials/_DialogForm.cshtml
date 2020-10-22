@@ -1,0 +1,96 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Markom2.Repository.Models
+@using Markom2.Web.Extensions 
+@model (MUser, FormPartialMode, SelectList, SelectList) 
+@*Item3 : ddl Role, Item4: ddl Employee*@ 
+@{
+    var disabled = false;
+    var modalTitle = "";
+    var formId = "";
+    var buttonId = "";
+
+    if (Model.Item2 == FormPartialMode.Add)
+    {
+        modalTitle = "Add User";
+        formId = "MuserModalSubmit";
+        buttonId = "AddUserForm";
+    }
+    else if (Model.Item2 == FormPartialMode.Detail)
+    {
+        disabled = true;
+        modalTitle = "View User - " + Model.Item1.MEmployee_Navigation.FirstName + " " + Model.Item1.MEmployee_Navigation.LastName + " (" + Model.Item1.Username + ")";
+    }
+    else if (Model.Item2 == FormPartialMode.Edit)
+    {
+        modalTitle = "Edit User - " + Model.Item1.MEmployee_Navigation.FirstName + " " + Model.Item1.MEmployee_Navigation.LastName + " (" + Model.Item1.Username + ")";
+        formId = "MUserModalSubmitEdit";
+        buttonId = "EditUserForm";
+    }
+    else if (Model.Item2 == FormPartialMode.Delete)
+    {
+        modalTitle = "Delete User - " + Model.Item1.MEmployee_Navigation.FirstName + " " + Model.Item1.MEmployee_Navigation.LastName + " (" + Model.Item1.Username + ")";
+        formId = "MUserModalSubmitDelete";
+        buttonId = "DeleteUserForm";
+    }
+
+    <form method="post" class="MUserFormPartial" id="@formId">
+        <div class="modal-header">
+            <h5 class="modal-title">@modalTitle</h5>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" asp-for="Item1.Id" />
+            <input type="hidden" asp-for="Item1.CreatedBy" />
+            @if (Model.Item2 == FormPartialMode.Delete)
+            {
+                <h6>Are you sure want to delete ?</h6>
+            }
+            else
+            {
+                <div class="row d-flex justify-content-center">
+                    <div class="col-sm">
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                        <div class="form-group">
+                            <label asp-for="Item1.MRoleId"></label>
+                            <select asp-for="Item1.MRoleId" asp-items="Model.Item3" class="form-control">
+                                <option value="">-- Select Role --</option>
+                            </select>
+                            <span asp-validation-for="Item1.MRoleId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Item1.MEmployeeId"></label>
+                            <select asp-for="Item1.MEmployeeId" asp-items="Model.Item4" class="form-control">
+                                <option value="">-- Select Employee --</option>
+                            </select>
+                            <span asp-validation-for="Item1.MEmployeeId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="form-group">
+                            <label asp-for="Item1.Username"></label>
+                            <input asp-for="Item1.Username" class="form-control" />
+                            <span asp-validation-for="Item1.Username" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Item1.Password"></label>
+                            <input asp-for="Item1.Password" class="form-control" />
+                            <span asp-validation-for="Item1.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Item1.RetypePassword"></label>
+                            <input asp-for="Item1.RetypePassword" class="form-control" />
+                            <span asp-validation-for="Item1.RetypePassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn @(Model.Item2 != FormPartialMode.Delete ? "btn-primary" : "btn-danger")"
+                    id="@buttonId" hidden="@disabled">@(Model.Item2 != FormPartialMode.Delete ? "Submit" : "Delete")</button>
+            <button type="button" class="btn btn-warning" id="MUserModalCloser">Cancel</button>
+        </div>
+    </form>
+}
